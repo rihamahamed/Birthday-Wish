@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en" style="scroll-behavior: smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Happy Birthday My Love 💕</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght=0,300;0,400;1,300;1,400&family=Poppins:wght=300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="floating-image-layer" class="floating-container"></div>
+
+    <canvas id="bg-canvas"></canvas>
+    <div id="overlay"></div>
+    <div id="prog" style="width: 0%"></div>
+    <button id="bgm-btn" onclick="toggleBGM()" title="Music">🎵</button>
+    <div id="bgm-paused-note">♪ BGM paused</div>
+    <div id="success-toast" class="success-toast">
+      🎉 Voucher Claimed Successfully!
+    </div>
+    <div id="error-toast" class="error-toast"></div>
+
+    <div class="page active" id="page-0">
+      <div
+        style="text-align: center; max-width: 400px; width: 100%; z-index: 2"
+      >
+        <span class="landing-ribbon">🎀</span>
+        <span class="script landing-title">Happy Birthday</span>
+        <span class="serif landing-sub">My lovely Darling</span>
+        <p class="q-text">Do you want to see your surprise?</p>
+        <span class="bow-anim">🎀</span>
+        <div class="btn-group">
+          <button
+            class="btn btn-rose"
+            style="font-size: 13px; padding: 15px 42px; letter-spacing: 2px"
+            onclick="handleYes(this)"
+          >
+            YES, I do 🥰
+          </button>
+          <button class="no-pill" onclick="goTo(1)">No, thanks</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-1">
+      <div style="text-align: center; max-width: 360px; z-index: 2">
+        <span class="panda">🐼</span>
+        <div
+          class="script"
+          style="
+            font-size: clamp(28px, 9vw, 55px);
+            color: var(--rose);
+            line-height: 1.2;
+          "
+        >
+          I promise you'll love it..
+        </div>
+        <p
+          style="
+            font-family: &quot;Cormorant Garamond&quot;, serif;
+            font-style: italic;
+            font-size: clamp(14px, 4vw, 17px);
+            color: #bbb;
+            margin: 12px 0 22px;
+          "
+        >
+          Please go back and say yesss..
+        </p>
+        <button class="btn btn-blue" onclick="goTo(0)">
+          Fine, I'll say yes 😅
+        </button>
+      </div>
+    </div>
+
+    <div class="page" id="page-2">
+      <div style="width: 100%; max-width: 410px">
+        <div class="script game-title">Small Game First</div>
+        <div class="game-sub">find all pairs before time runs out</div>
+        <div class="g-stats">
+          <div class="stat" id="tstat">⏱ <span id="timer">30</span>s</div>
+          <div class="stat">🐾 <span id="moves">0</span> moves</div>
+          <div class="stat">
+            🏆 <span id="pf">0</span>/<span id="pt">6</span>
+          </div>
+        </div>
+        <div class="glass" style="padding: clamp(12px, 4vw, 17px)">
+          <div class="gpanel" id="gwin">
+            <h2>You Won! 🎉</h2>
+            <p class="gpanel-sub">Amazing! Now explore your gifts...</p>
+            <button class="btn btn-rose" onclick="goTo(3)">
+              Choose a Gift 🎁
+            </button>
+          </div>
+          <div class="gpanel lose" id="glose">
+            <h2>Time's Up!</h2>
+            <p class="gpanel-sub">Try again!</p>
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button class="btn btn-blue" onclick="startGame()">
+                Try Again
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="passcode-container"
+            style="display: none; padding: 15px; text-align: center"
+          >
+            <p
+              style="
+                color: var(--rose);
+                font-weight: 500;
+                font-size: 14px;
+                margin-bottom: 5px;
+              "
+            >
+              Hint: It's our memorable day
+            </p>
+            <input
+              type="password"
+              id="game-passcode"
+              placeholder="Enter Passcode"
+              style="
+                padding: 10px;
+                border-radius: 20px;
+                border: 1px solid #ddd;
+                text-align: center;
+                margin-bottom: 10px;
+                width: 80%;
+                outline: none;
+              "
+            />
+            <div>
+              <button
+                class="btn btn-rose"
+                style="padding: 8px 20px; font-size: 12px"
+                onclick="verifyPasscode()"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+
+          <div class="mem-grid" id="mgrid"></div>
+        </div>
+        <div class="g-actions">
+          <button class="btn btn-rose" id="sbtn" onclick="startGame()">
+            🎀 Start Game
+          </button>
+          <button
+            class="btn btn-back"
+            id="rbtn"
+            onclick="startGame()"
+            style="display: none"
+          >
+            Restart
+          </button>
+          <button
+            class="btn btn-back"
+            id="skbtn"
+            onclick="showPasscodeField()"
+            style="display: none"
+          >
+            Skip
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page page-scroll" id="page-3">
+      <div
+        style="
+          width: 100%;
+          max-width: 480px;
+          margin: 0 auto;
+          padding-bottom: 30px;
+        "
+      >
+        <div class="gift-hub-title">Choose a Gift</div>
+        <p class="gift-hub-sub">Pick one to explore... 🎁</p>
+
+        <div class="gift-grid">
+          <div class="gift-item" id="gift-btn-4" onclick="clickGift(4)">
+            <span class="gift-icon">💌</span>
+            <div class="gift-lbl">Love Letter</div>
+          </div>
+          <div class="gift-item" id="gift-btn-5" onclick="clickGift(5)">
+            <span class="gift-icon">🫙</span>
+            <div class="gift-lbl">Love Jar</div>
+          </div>
+          <div class="gift-item" id="gift-btn-6" onclick="clickGift(6)">
+            <span class="gift-icon">🎟️</span>
+            <div class="gift-lbl">Vouchers</div>
+          </div>
+          <div class="gift-item" id="gift-btn-7" onclick="clickGift(7)">
+            <span class="gift-icon">🎬</span>
+            <div class="gift-lbl">Our Song</div>
+          </div>
+          <div class="gift-item" id="gift-btn-8" onclick="clickGift(8)">
+            <span class="gift-icon">📷</span>
+            <div class="gift-lbl">Our Photos</div>
+          </div>
+          <div class="gift-item" id="gift-btn-9" onclick="clickGift(9)">
+            <span class="gift-icon">💖</span>
+            <div class="gift-lbl">Time You've Bloomed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-4">
+      <div class="page-content">
+        <span class="bouquet">💐</span>
+        <div class="letter-box glass" style="margin-top: 10px">
+          <div class="divider">✦ ✦ ✦</div>
+          <h2>Happy Birthday My Love...</h2>
+          <div class="divider" style="margin-bottom: 15px">✦ ✦ ✦</div>
+
+          <div class="letter-scroll">
+            <p style="margin-bottom: 14px">
+              Today isn't just about celebrating the day you were born. It's
+              about celebrating the kind of person you are — the strength you
+              carry, the kindness you show, and the way you quietly make my life
+              better just by being in it.
+            </p>
+            <p style="margin-bottom: 14px">
+              You have this way of making everything feel lighter. Even on my
+              most stressful days, your presence brings calm. Your voice feels
+              like home. Your laughter feels like comfort. Your support means
+              more to me than you probably realise.
+            </p>
+            <p style="margin-bottom: 14px">
+              I admire how hardworking, graceful and caring you are. I am so
+              proud of everything you are, and everything you are still
+              becoming. Every day with you is a gift I will never take for
+              granted.
+            </p>
+          </div>
+
+          <div
+            class="letter-sig"
+            style="margin-top: 15px; font-weight: 600; color: var(--rose)"
+          >
+            Forever Yours 💕
+          </div>
+          <div style="text-align: center; margin-top: 20px">
+            <button class="btn btn-back" onclick="goTo(3)">
+              ← Back to Gifts
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-5">
+      <div class="jar-title">Love Jar</div>
+      <p class="jar-sub-txt">Things I love about you...</p>
+      <div class="jar-layout" style="max-width: min(720px, 96vw)">
+        <div class="jar-col" style="align-items: flex-end">
+          <div class="tag tag-blue" style="animation-delay: 0.08s">
+            The way you care for me
+          </div>
+          <div class="tag tag-blue" style="animation-delay: 0.2s">
+            The way you prioritise me
+          </div>
+          <div class="tag tag-mauve" style="animation-delay: 0.34s">
+            Always attentive towards me
+          </div>
+          <div class="tag tag-blue" style="animation-delay: 0.48s">
+            The way you solve things after an argument
+          </div>
+        </div>
+        <svg
+          style="
+            width: clamp(100px, 30vw, 140px);
+            flex-shrink: 0;
+            animation: sway 4s ease-in-out infinite;
+          "
+          viewBox="0 0 148 200"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="39" y="10" width="70" height="20" rx="6" fill="#c94f6d" />
+          <rect x="32" y="26" width="84" height="10" rx="4" fill="#a83a56" />
+          <path
+            d="M32 36 Q27 75 27 125 Q27 178 74 178 Q121 178 121 125 Q121 75 116 36 Z"
+            fill="rgba(255,255,255,0.55)"
+            stroke="#e0c0c8"
+            stroke-width="1"
+          />
+          <text x="48" y="84" font-size="15">❤️</text>
+          <text x="75" y="74" font-size="11">🩷</text>
+          <text x="58" y="108" font-size="13">❤️</text>
+          <text x="84" y="100" font-size="10">🩷</text>
+          <text x="43" y="136" font-size="15">❤️</text>
+          <text x="70" y="146" font-size="17">❤️</text>
+          <text x="94" y="128" font-size="10">🩷</text>
+          <text x="54" y="161" font-size="10">🩷</text>
+        </svg>
+        <div class="jar-col" style="align-items: flex-start">
+          <div class="tag tag-rose tag-r" style="animation-delay: 0.12s">
+            The way you assure me
+          </div>
+          <div class="tag tag-rose tag-r" style="animation-delay: 0.26s">
+            The way you understand me
+          </div>
+          <div class="tag tag-mauve tag-r" style="animation-delay: 0.4s">
+            Your beautiful smile
+          </div>
+          <div class="tag tag-rose tag-r" style="animation-delay: 0.54s">
+            Your kind heart
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 22px; text-align: center">
+        <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
+      </div>
+    </div>
+
+    <div class="page page-scroll" id="page-6">
+      <div
+        style="
+          max-width: clamp(320px, 94vw, 680px);
+          width: 100%;
+          text-align: center;
+        "
+      >
+        <div class="voucher-title">Birthday Vouchers</div>
+        <div class="voucher-hearts">🩷 💕 🩷</div>
+        <p class="voucher-swipe-hint">← swipe to see all vouchers →</p>
+        <div class="voucher-scroll" id="voucher-scroll">
+          <div class="voucher-card" onclick="redeemVoucher(this, 0)">
+            <span class="voucher-bow">🎀</span>
+            <div class="voucher-tag" id="v0"><p>Free Birthday Shopping</p></div>
+          </div>
+          <div class="voucher-card" onclick="redeemVoucher(this, 1)">
+            <span class="voucher-bow">🎀</span>
+            <div class="voucher-tag" id="v1"><p>Movie Night With You</p></div>
+          </div>
+          <div class="voucher-card" onclick="redeemVoucher(this, 2)">
+            <span class="voucher-bow">🎀</span>
+            <div class="voucher-tag" id="v2">
+              <p>Your Most Loved Dessert</p>
+            </div>
+          </div>
+        </div>
+        <div
+          id="voucher-popup"
+          style="display: none; margin: 10px auto; max-width: 280px"
+          class="glass"
+        >
+          <div style="padding: 14px 16px; text-align: center">
+            <div style="font-size: 26px; margin-bottom: 6px" id="vpopup-icon">
+              🎀
+            </div>
+            <p
+              id="vpopup-text"
+              style="
+                font-family: &quot;Cormorant Garamond&quot;, serif;
+                font-style: italic;
+                font-size: clamp(14px, 4vw, 16px);
+                color: #888;
+                line-height: 1.7;
+              "
+            ></p>
+            <button
+              class="btn btn-rose"
+              onclick="claimVoucher()"
+              style="margin-top: 12px"
+            >
+              Claim it! 🎉
+            </button>
+          </div>
+        </div>
+        <div style="margin-top: 14px">
+          <button class="btn btn-back" onclick="goTo(3)">
+            ← Back to Gifts
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-7">
+      <div
+        style="
+          width: 100%;
+          max-width: min(780px, 94vw);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+          padding: 0 12px;
+        "
+      >
+        <div class="song-title">Song that reminds me of you</div>
+        <div class="yt-wrap glass" id="yt-wrap" style="width: 100%"></div>
+        <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
+      </div>
+    </div>
+
+    <div class="page page-scroll" id="page-8">
+      <div style="text-align: center; margin-bottom: 14px">
+        <div class="cap-strip">
+          <span class="cap-word">Forever</span>
+          <span class="cap-word">In Love</span>
+          <span class="cap-word">With</span>
+          <span class="cap-word">You</span>
+        </div>
+        <div class="script gallery-name">Handsome Birthday Boy 💕</div>
+      </div>
+      <div class="pol-grid">
+        <div class="pol" style="--r: -3">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #fce4ec, #f8bbd9)"
+          >
+            🥰
+          </div>
+          <div class="pol-label">Us Forever</div>
+        </div>
+        <div class="pol" style="--r: 2">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #e3f2fd, #bbdefb)"
+          >
+            💑
+          </div>
+          <div class="pol-label">My Fave</div>
+        </div>
+        <div class="pol" style="--r: -2">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #fff9c4, #fff176)"
+          >
+            ☀️
+          </div>
+          <div class="pol-label">Golden Days</div>
+        </div>
+        <div class="pol" style="--r: 4">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #fce4ec, #f48fb1)"
+          >
+            💕
+          </div>
+          <div class="pol-label">In Love</div>
+        </div>
+        <div class="pol" style="--r: -1">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #e8f5e9, #a5d6a7)"
+          >
+            🌿
+          </div>
+          <div class="pol-label">Together</div>
+        </div>
+        <div class="pol" style="--r: 3">
+          <div
+            class="pol-photo"
+            style="background: linear-gradient(135deg, #ede7f6, #b39ddb)"
+          >
+            🌙
+          </div>
+          <div class="pol-label">Always</div>
+        </div>
+      </div>
+      <div style="text-align: center">
+        <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
+      </div>
+    </div>
+
+    <div class="page page-scroll" id="page-9">
+      <div
+        id="surprise-content"
+        style="
+          z-index: 2;
+          width: 100%;
+          max-width: 460px;
+          margin-top: auto;
+          margin-bottom: auto;
+        "
+      >
+        <div class="surprise-inner glass">
+          <h1 class="surprise-h1" style="margin-top: 15px">HAPPY BIRTHDAY</h1>
+          <h2 class="surprise-h2">🌸 My Darling 🌸</h2>
+
+          <p class="surprise-intro-text">
+            My dear, you've graced this world and my life with pure joy:
+          </p>
+
+          <div id="lifeCounter" class="counter-grid"></div>
+
+          <div style="margin-top: 25px; width: 100%">
+            <button
+              class="btn btn-back"
+              onclick="goTo(3)"
+              style="font-size: 11px; padding: 10px 22px"
+            >
+              ← Back to Gifts
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="final-thoughts-modal" class="modal-backdrop">
+      <div
+        class="modal-surface glass"
+        style="text-align: center; max-width: 420px; width: 100%"
+      >
+        <button class="modal-close-btn" onclick="closeThoughtsModal()">
+          &times;
+        </button>
+
+        <div style="padding: 10px 5px">
+          <span style="font-size: 32px">🎁 ✨</span>
+          <h3
+            style="
+              font-family: &quot;Cormorant Garamond&quot;, serif;
+              font-style: italic;
+              color: var(--rose);
+              font-size: 24px;
+              margin: 8px 0;
+            "
+          >
+            You've Unlocked the Grand Finale!
+          </h3>
+          <p style="font-size: 13px; color: #666; margin-bottom: 15px">
+            Please share your thoughts with me before you leave...
+          </p>
+
+          <textarea
+            id="feedbackText"
+            placeholder="Write down whatever is in your heart..."
+            style="
+              width: 100%;
+              height: 100px;
+              padding: 12px;
+              border-radius: 12px;
+              border: 1px solid rgba(212, 85, 110, 0.3);
+              background: rgba(255, 255, 255, 0.7);
+              outline: none;
+              resize: none;
+              font-family: &quot;Poppins&quot;, sans-serif;
+              font-size: 13px;
+              box-sizing: border-box;
+            "
+          ></textarea>
+
+          <button
+            class="btn btn-rose"
+            style="
+              font-size: 12px;
+              padding: 12px 28px;
+              margin-top: 14px;
+              width: 100%;
+            "
+            onclick="submitFeedback()"
+          >
+            Send Thoughts & Close 💌
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
