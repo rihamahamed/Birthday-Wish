@@ -1,3 +1,8 @@
+/* ════════════════════════════════════════════
+   BIRTHDAY SURPRISE — main.js (CONSOLIDATED)
+════════════════════════════════════════════ */
+
+/* ── VH FIX ── */
 function setVH() {
   document.documentElement.style.setProperty(
     "--vh",
@@ -7,6 +12,9 @@ function setVH() {
 setVH();
 window.addEventListener("resize", setVH);
 
+/* ══════════════════════════════════════════
+   BGM — MP3 AUDIO SYSTEM
+══════════════════════════════════════════ */
 let bgm = new Audio("mp3/music.mp3");
 bgm.loop = true;
 bgm.volume = 0.5;
@@ -67,6 +75,9 @@ function autoStartBGM() {
 document.addEventListener("click", autoStartBGM, { once: true });
 document.addEventListener("touchstart", autoStartBGM, { once: true });
 
+/* ══════════════════════════════════════════
+   PAGE 7 — MEMORY VIDEO PLAYER
+══════════════════════════════════════════ */
 function mountVideo() {
   const wrap = document.getElementById("yt-wrap");
   if (!wrap) return;
@@ -90,6 +101,9 @@ function destroyVideo() {
   if (wrap) wrap.innerHTML = "";
 }
 
+/* ══════════════════════════════════════════
+   FLOATING IMAGES GENERATOR
+══════════════════════════════════════════ */
 const floatingImagesList = [
   "img/img.jpeg",
   "img/img1.jpeg",
@@ -125,6 +139,9 @@ function initContinuousFloatingImages() {
   }
 }
 
+/* ══════════════════════════════════════════
+   NAVIGATION SYSTEM
+══════════════════════════════════════════ */
 const PAGES = [
   "page-0",
   "page-1",
@@ -180,11 +197,7 @@ function goTo(idx) {
 
   if (cur === 9) {
     clearInterval(lifeInterval);
-    if (imgRotateInterval) clearInterval(imgRotateInterval);
     lifeInterval = null;
-    imgRotateInterval = null;
-    document.getElementById("surprise-open-wrap").style.display = "block";
-    document.getElementById("surprise-content").style.display = "none";
   }
 
   if (cur === 7) {
@@ -216,6 +229,11 @@ function goTo(idx) {
     }
 
     if (idx === 6) restoreVoucherState();
+
+    // Directly transitions to calculation counter layout
+    if (idx === 9) {
+      startDirectLifeCounter();
+    }
   }, 310);
 }
 
@@ -224,8 +242,86 @@ function updateProg() {
     Math.round((cur / 9) * 100) + "%";
 }
 
+/* ══════════════════════════════════════════
+   PAGE 9 — TIME YOU'VE BLOOMED (DIRECT)
+══════════════════════════════════════════ */
+let lifeInterval = null;
+
+function startDirectLifeCounter() {
+  if (lifeInterval) clearInterval(lifeInterval);
+
+  function updateLife() {
+    const birth = new Date("2001-07-02T00:00:00"),
+      now = new Date();
+    let Y = now.getFullYear() - birth.getFullYear();
+    let M = now.getMonth() - birth.getMonth();
+    let D = now.getDate() - birth.getDate();
+    let h = now.getHours() - birth.getHours();
+    let m = now.getMinutes() - birth.getMinutes();
+    let s = now.getSeconds() - birth.getSeconds();
+
+    if (s < 0) {
+      s += 60;
+      m--;
+    }
+    if (m < 0) {
+      m += 60;
+      h--;
+    }
+    if (h < 0) {
+      h += 24;
+      D--;
+    }
+    if (D < 0) {
+      D += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      M--;
+    }
+    if (M < 0) {
+      M += 12;
+      Y--;
+    }
+
+    const counterEl = document.getElementById("lifeCounter");
+    if (counterEl) {
+      counterEl.innerHTML = `
+        <div class="counter-row">
+          <span class="counter-label">✨ Wonderful Years</span>
+          <span class="counter-num">${Y}</span>
+        </div>
+        <div class="counter-row">
+          <span class="counter-label">🌙 Enchanting Months</span>
+          <span class="counter-num">${M}</span>
+        </div>
+        <div class="counter-row">
+          <span class="counter-label">📅 Precious Days</span>
+          <span class="counter-num">${D}</span>
+        </div>
+        <div class="counter-row">
+          <span class="counter-label">⏱️ Tender Hours</span>
+          <span class="counter-num">${h}</span>
+        </div>
+        <div class="counter-row">
+          <span class="counter-label">💓 Heartfelt Minutes</span>
+          <span class="counter-num">${m}</span>
+        </div>
+        <div class="counter-row">
+          <span class="counter-label">💖 Sparkling Seconds</span>
+          <span class="counter-num">${s}</span>
+        </div>
+      `;
+    }
+  }
+
+  updateLife();
+  lifeInterval = setInterval(updateLife, 1000);
+}
+
+/* ══════════════════════════════════════════
+   CANVAS DECORATION BACKGROUND GRAPHICS
+══════════════════════════════════════════ */
 (function () {
   const cv = document.getElementById("bg-canvas");
+  if (!cv) return;
   const cx = cv.getContext("2d");
   let W,
     H,
@@ -304,6 +400,9 @@ function updateProg() {
   draw();
 })();
 
+/* ══════════════════════════════════════════
+   CLICK INTERACTION EFFECT PANELS
+══════════════════════════════════════════ */
 const HH = ["💕", "💗", "💖", "💝", "🩷", "❤️"];
 
 function spawnHearts(x, y, n = 10) {
@@ -341,6 +440,9 @@ function handleYes(btn) {
   setTimeout(() => goTo(2), 400);
 }
 
+/* ══════════════════════════════════════════
+   PAGE 2 — GAME ENGINE COMPONENT
+══════════════════════════════════════════ */
 const EMOJIS = ["", "🎂", "💝", "🌹", "💌", "🎁"];
 let gFlipped = [],
   gMatched = 0,
@@ -352,6 +454,7 @@ let gLocked = false;
 
 function initGame() {
   const g = document.getElementById("mgrid");
+  if (!g) return;
   g.innerHTML = "";
   g.style.display = "";
   document.getElementById("passcode-container").style.display = "none";
@@ -485,6 +588,9 @@ function gFlip(c) {
   }
 }
 
+/* ══════════════════════════════════════════
+   EMAILJS / VOUCHER COMPONENT SYSTEM
+══════════════════════════════════════════ */
 emailjs.init("fOKIPhBJveSbfrzCZ");
 
 const voucherTexts = [
@@ -523,9 +629,11 @@ function redeemVoucher(card, idx) {
 
 function showSuccessToast(message) {
   const toast = document.getElementById("success-toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
+  if (toast) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+  }
 }
 
 function claimVoucher() {
@@ -610,113 +718,12 @@ function confettiBurst(mini = false) {
     }, i * 18);
 }
 
-let lifeInterval = null;
-let mainImgIdx = 0;
-let imgRotateInterval = null;
-
-const surpriseImages = [
-  "img/img1.jpeg",
-  "img/img2.jpeg",
-  "img/img3.jpeg",
-  "img/img4.jpeg",
-];
-
-const rotations = [
-  "rotate(-6deg) scale(1.02)",
-  "rotate(5deg) scale(0.98)",
-  "rotate(-3deg) scale(1.04)",
-  "rotate(6deg) scale(1.0)",
-];
-
-function openBigSurprise() {
-  document.getElementById("surprise-open-wrap").style.display = "none";
-  const content = document.getElementById("surprise-content");
-  content.style.display = "block";
-  content.style.animation = "fadeUp 1s ease";
-
-  mainImgIdx = 0;
-  const mainImgEl = document.getElementById("surpriseMainImg");
-  mainImgEl.src = surpriseImages[0];
-  mainImgEl.style.transform = rotations[0];
-  mainImgEl.style.opacity = "1";
-
-  function updateLife() {
-    const birth = new Date("2001-07-02T00:00:00"),
-      now = new Date();
-    let Y = now.getFullYear() - birth.getFullYear();
-    let M = now.getMonth() - birth.getMonth();
-    let D = now.getDate() - birth.getDate();
-    let h = now.getHours() - birth.getHours();
-    let m = now.getMinutes() - birth.getMinutes();
-    let s = now.getSeconds() - birth.getSeconds();
-    if (s < 0) {
-      s += 60;
-      m--;
-    }
-    if (m < 0) {
-      m += 60;
-      h--;
-    }
-    if (h < 0) {
-      h += 24;
-      D--;
-    }
-    if (D < 0) {
-      D += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-      M--;
-    }
-    if (M < 0) {
-      M += 12;
-      Y--;
-    }
-
-    document.getElementById("lifeCounter").innerHTML = `
-      <div class="counter-row">
-        <span class="counter-label">✨ Wonderful Years</span>
-        <span class="counter-num">${Y}</span>
-      </div>
-      <div class="counter-row">
-        <span class="counter-label">🌙 Enchanting Months</span>
-        <span class="counter-num">${M}</span>
-      </div>
-      <div class="counter-row">
-        <span class="counter-label">📅 Precious Days</span>
-        <span class="counter-num">${D}</span>
-      </div>
-      <div class="counter-row">
-        <span class="counter-label">⏱️ Tender Hours</span>
-        <span class="counter-num">${h}</span>
-      </div>
-      <div class="counter-row">
-        <span class="counter-label">💓 Heartfelt Minutes</span>
-        <span class="counter-num">${m}</span>
-      </div>
-      <div class="counter-row">
-        <span class="counter-label">💖 Sparkling Seconds</span>
-        <span class="counter-num">${s}</span>
-      </div>
-    `;
-  }
-  updateLife();
-  lifeInterval = setInterval(updateLife, 1000);
-
-  imgRotateInterval = setInterval(() => {
-    mainImgEl.style.opacity = "0";
-    setTimeout(() => {
-      mainImgIdx = (mainImgIdx + 1) % surpriseImages.length;
-      mainImgEl.src = surpriseImages[mainImgIdx];
-      mainImgEl.style.transform = rotations[mainImgIdx];
-      mainImgEl.style.opacity = "1";
-    }, 500);
-  }, 2500);
-}
-
+/* ── DOM CONTENT LOADED INITIALIZATION ── */
 document.addEventListener("DOMContentLoaded", () => {
   initContinuousFloatingImages();
 
-  setTimeout(
-    () => document.getElementById("page-0").classList.add("visible"),
-    50,
-  );
+  const p0 = document.getElementById("page-0");
+  if (p0) setTimeout(() => p0.classList.add("visible"), 50);
+
   updateProg();
 });
