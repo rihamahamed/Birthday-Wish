@@ -1,8 +1,3 @@
-/* ════════════════════════════════════════════
-   BIRTHDAY SURPRISE — main.js (CONSOLIDATED)
-════════════════════════════════════════════ */
-
-/* ── VH FIX ── */
 function setVH() {
   document.documentElement.style.setProperty(
     "--vh",
@@ -12,9 +7,6 @@ function setVH() {
 setVH();
 window.addEventListener("resize", setVH);
 
-/* ══════════════════════════════════════════
-   BGM — MP3 AUDIO SYSTEM
-══════════════════════════════════════════ */
 let bgm = new Audio("mp3/music.mp3");
 bgm.loop = true;
 bgm.volume = 0.5;
@@ -75,9 +67,6 @@ function autoStartBGM() {
 document.addEventListener("click", autoStartBGM, { once: true });
 document.addEventListener("touchstart", autoStartBGM, { once: true });
 
-/* ══════════════════════════════════════════
-   PAGE 7 — MEMORY VIDEO PLAYER
-══════════════════════════════════════════ */
 function mountVideo() {
   const wrap = document.getElementById("yt-wrap");
   if (!wrap) return;
@@ -101,9 +90,6 @@ function destroyVideo() {
   if (wrap) wrap.innerHTML = "";
 }
 
-/* ══════════════════════════════════════════
-   FLOATING IMAGES GENERATOR
-══════════════════════════════════════════ */
 const floatingImagesList = [
   "img/img.jpeg",
   "img/img1.jpeg",
@@ -118,10 +104,22 @@ function initContinuousFloatingImages() {
   const totalFloatingElements = 6;
 
   for (let i = 0; i < totalFloatingElements; i++) {
-    const imgNode = document.createElement("img");
-
-    imgNode.src = floatingImagesList[i % floatingImagesList.length];
+    const imgNode = document.createElement("div");
     imgNode.className = "floating-circle-img";
+
+    const currentItem = floatingImagesList[i % floatingImagesList.length];
+
+    if (currentItem.includes(".") || currentItem.startsWith("data:")) {
+      imgNode.style.backgroundImage = `url('${currentItem}')`;
+      imgNode.style.backgroundSize = "cover";
+      imgNode.style.backgroundPosition = "center";
+    } else {
+      imgNode.textContent = currentItem;
+      imgNode.style.display = "flex";
+      imgNode.style.justifyContent = "center";
+      imgNode.style.alignItems = "center";
+      imgNode.style.fontSize = "2rem";
+    }
 
     const leftPosition = i * (100 / totalFloatingElements) + Math.random() * 8;
     imgNode.style.left = `${leftPosition}%`;
@@ -139,9 +137,6 @@ function initContinuousFloatingImages() {
   }
 }
 
-/* ══════════════════════════════════════════
-   NAVIGATION SYSTEM
-══════════════════════════════════════════ */
 const PAGES = [
   "page-0",
   "page-1",
@@ -230,7 +225,6 @@ function goTo(idx) {
 
     if (idx === 6) restoreVoucherState();
 
-    // Directly transitions to calculation counter layout
     if (idx === 9) {
       startDirectLifeCounter();
     }
@@ -242,9 +236,6 @@ function updateProg() {
     Math.round((cur / 9) * 100) + "%";
 }
 
-/* ══════════════════════════════════════════
-   PAGE 9 — TIME YOU'VE BLOOMED (DIRECT)
-══════════════════════════════════════════ */
 let lifeInterval = null;
 
 function startDirectLifeCounter() {
@@ -285,28 +276,29 @@ function startDirectLifeCounter() {
     if (counterEl) {
       counterEl.innerHTML = `
         <div class="counter-row">
-          <span class="counter-label">✨ Wonderful Years</span>
           <span class="counter-num">${Y}</span>
+          <span class="counter-label">✨ Wonderful Years</span>
         </div>
         <div class="counter-row">
-          <span class="counter-label">🌙 Enchanting Months</span>
           <span class="counter-num">${M}</span>
+
+          <span class="counter-label">🌙 Enchanting Months</span>
         </div>
         <div class="counter-row">
-          <span class="counter-label">📅 Precious Days</span>
           <span class="counter-num">${D}</span>
+          <span class="counter-label">📅 Precious Days</span>
         </div>
         <div class="counter-row">
-          <span class="counter-label">⏱️ Tender Hours</span>
           <span class="counter-num">${h}</span>
+          <span class="counter-label">⏱️ Tender Hours</span>
         </div>
         <div class="counter-row">
-          <span class="counter-label">💓 Heartfelt Minutes</span>
           <span class="counter-num">${m}</span>
+          <span class="counter-label">💓 Heartfelt Minutes</span>
         </div>
         <div class="counter-row">
-          <span class="counter-label">💖 Sparkling Seconds</span>
           <span class="counter-num">${s}</span>
+          <span class="counter-label">💖 Sparkling Seconds</span>
         </div>
       `;
     }
@@ -316,9 +308,6 @@ function startDirectLifeCounter() {
   lifeInterval = setInterval(updateLife, 1000);
 }
 
-/* ══════════════════════════════════════════
-   CANVAS DECORATION BACKGROUND GRAPHICS
-══════════════════════════════════════════ */
 (function () {
   const cv = document.getElementById("bg-canvas");
   if (!cv) return;
@@ -400,9 +389,6 @@ function startDirectLifeCounter() {
   draw();
 })();
 
-/* ══════════════════════════════════════════
-   CLICK INTERACTION EFFECT PANELS
-══════════════════════════════════════════ */
 const HH = ["💕", "💗", "💖", "💝", "🩷", "❤️"];
 
 function spawnHearts(x, y, n = 10) {
@@ -440,9 +426,6 @@ function handleYes(btn) {
   setTimeout(() => goTo(2), 400);
 }
 
-/* ══════════════════════════════════════════
-   PAGE 2 — GAME ENGINE COMPONENT
-══════════════════════════════════════════ */
 const EMOJIS = ["🍫", "🎂", "💝", "🌹", "💌", "🎁"];
 let gFlipped = [],
   gMatched = 0,
@@ -451,44 +434,6 @@ let gLive = false,
   gTid,
   gLeft = 30;
 let gLocked = false;
-
-// function initGame() {
-//   const wrapper = document.getElementById("gameCardContainer");
-//   if (wrapper) wrapper.setAttribute("data-game-state", "idle");
-
-//   const g = document.getElementById("mgrid");
-//   if (!g) return;
-
-//   g.innerHTML = "";
-//   document.getElementById("sbtn").style.display = "";
-//   document.getElementById("rbtn").style.display = "none";
-//   document.getElementById("skbtn").style.display = ""; // Keeps bypass visible
-//   document.getElementById("timer").textContent = "30";
-//   document.getElementById("moves").textContent = "0";
-//   document.getElementById("pf").textContent = "0";
-//   document.getElementById("pt").textContent = EMOJIS.length;
-//   document.getElementById("tstat").classList.remove("low");
-//   document.getElementById("game-passcode").value = "";
-
-//   gMoves = 0;
-//   gMatched = 0;
-//   gFlipped = [];
-//   gLeft = 30;
-//   gLive = false;
-//   gLocked = false;
-//   clearInterval(gTid);
-
-//   [...EMOJIS, ...EMOJIS]
-//     .sort(() => Math.random() - 0.5)
-//     .forEach((e) => {
-//       const c = document.createElement("button");
-//       c.className = "mc";
-//       c.dataset.e = e;
-//       c.innerHTML = `<div class="mc-b">🎀</div><div class="mc-f">${e}</div>`;
-//       c.addEventListener("click", () => gFlip(c));
-//       g.appendChild(c);
-//     });
-// }
 
 function initGame() {
   const wrapper = document.getElementById("gameCardContainer");
@@ -527,26 +472,6 @@ function initGame() {
     });
 }
 
-// function startGame() {
-//   initGame();
-//   const wrapper = document.getElementById("gameCardContainer");
-//   if (wrapper) wrapper.setAttribute("data-game-state", "playing");
-
-//   document.getElementById("sbtn").style.display = "none";
-//   document.getElementById("rbtn").style.display = "";
-//   gLive = true;
-//   gTid = setInterval(() => {
-//     gLeft--;
-//     document.getElementById("timer").textContent = gLeft;
-//     if (gLeft <= 8) document.getElementById("tstat").classList.add("low");
-//     if (gLeft <= 0) {
-//       clearInterval(gTid);
-//       gLive = false;
-//       if (wrapper) wrapper.setAttribute("data-game-state", "lost");
-//     }
-//   }, 1000);
-// }
-
 function startGame() {
   initGame();
   const wrapper = document.getElementById("gameCardContainer");
@@ -565,28 +490,15 @@ function startGame() {
       gLive = false;
       if (wrapper) wrapper.setAttribute("data-game-state", "lost");
 
-      // HIDE skip button when times up panel appears
       document.getElementById("skbtn").style.display = "none";
     }
   }, 1000);
 }
 
-// function showPasscodeField() {
-//   const wrapper = document.getElementById("gameCardContainer");
-//   if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
-
-//   // Auto-focus input for a better user experience on desktop/mobile
-//   setTimeout(() => {
-//     const input = document.getElementById("game-passcode");
-//     if (input) input.focus();
-//   }, 100);
-// }
-
 function showPasscodeField() {
   const wrapper = document.getElementById("gameCardContainer");
   if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
 
-  // HIDE skip button when passcode container panel is active
   document.getElementById("skbtn").style.display = "none";
 
   setTimeout(() => {
@@ -595,7 +507,6 @@ function showPasscodeField() {
   }, 100);
 }
 
-// Modify the inside win section of gFlip() function:
 if (gMatched === EMOJIS.length) {
   clearInterval(gTid);
   gLive = false;
@@ -661,33 +572,27 @@ function gFlip(c) {
       gMatched++;
       document.getElementById("pf").textContent = gMatched;
       gFlipped = [];
-      // Locate this block in your tile matching validation algorithm inside main.js:
       if (gMatched === EMOJIS.length) {
         clearInterval(gTid);
         gLive = false;
 
         setTimeout(() => {
-          // 1. Target your custom toast notification container
           const toast = document.getElementById("success-toast");
           if (toast) {
-            // Customise the toast text for winning the puzzle
             toast.textContent = "🎉 Match Complete! You Unlocked Your Gifts!";
             toast.classList.add("show");
 
-            // Auto-hide the success toast after 3 seconds
             setTimeout(() => {
               toast.classList.remove("show");
             }, 3000);
           }
 
-          // 2. Automatically advance the navigation state machine straight to Page 3 (Gift Hub)
           goTo(3);
 
-          // 3. Fire the decorative reward animation effects
           if (typeof confetti !== "undefined") {
             confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
           }
-        }, 500); // 500ms delay gives enough breathing space to let the last card finish flipping over smoothly
+        }, 500);
       }
     } else {
       gLocked = true;

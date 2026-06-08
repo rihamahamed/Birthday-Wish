@@ -691,6 +691,7 @@ body {
   gap: 12px;
   width: 46%;
 }
+
 .tag {
   background: white;
   padding: 9px 13px;
@@ -736,7 +737,7 @@ body {
 .voucher-hearts {
   color: var(--rose-l);
   font-size: var(--fs-s);
-  margin-top: -8px;
+  margin-top: 8px;
   margin-bottom: 6px;
   text-align: center;
 }
@@ -855,9 +856,10 @@ body {
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-.pol:hover {
-  transform: rotate(0deg) scale(1.05);
-  box-shadow: 0 10px 24px rgba(42, 31, 38, 0.12);
+.pol:hover,
+.pol:active {
+  transform: rotate(0deg) scale(1.08) translateY(-5px);
+  box-shadow: 0 15px 30px rgba(42, 31, 38, 0.15);
   z-index: 5;
 }
 .pol-photo {
@@ -929,6 +931,13 @@ body {
   font-size: clamp(13px, 3.5vw, 16px);
   color: #666;
   margin-bottom: 12px;
+}
+.footer-note {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: clamp(13px, 3.5vw, 16px);
+  color: #555;
+  text-align: center;
 }
 .counter-grid {
   display: flex;

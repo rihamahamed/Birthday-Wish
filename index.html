@@ -7,6 +7,22 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Happy Birthday My Love 💕</title>
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2250%22 fill=%22%23d4556e%22/><text x=%2250%%22 y=%2253%%22 font-size=%2260%22 text-anchor=%22middle%22 dominant-baseline=%22central%22>🎁</text></svg>"
+    />
+
+    <script>
+      let docTitle = document.title;
+
+      window.addEventListener("blur", () => {
+        document.title = "Come back! Your surprise is waiting... 🥺💕";
+      });
+      window.addEventListener("focus", () => {
+        document.title = docTitle;
+      });
+    </script>
     <link
       href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght=0,300;0,400;1,300;1,400&family=Poppins:wght=300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -158,14 +174,6 @@
           <button class="btn btn-rose" id="sbtn" onclick="startGame()">
             🎀 Start Game
           </button>
-          <!-- <button
-            class="btn btn-back"
-            id="rbtn"
-            onclick="startGame()"
-            style="display: none"
-          >
-            Restart
-          </button> -->
           <button
             class="btn btn-back"
             id="skbtn"
@@ -205,11 +213,11 @@
           </div>
           <div class="gift-item" id="gift-btn-7" onclick="clickGift(7)">
             <span class="gift-icon">🎬</span>
-            <div class="gift-lbl">Our Song</div>
+            <div class="gift-lbl">Song</div>
           </div>
           <div class="gift-item" id="gift-btn-8" onclick="clickGift(8)">
             <span class="gift-icon">📷</span>
-            <div class="gift-lbl">Our Photos</div>
+            <div class="gift-lbl">Photos</div>
           </div>
           <div class="gift-item" id="gift-btn-9" onclick="clickGift(9)">
             <span class="gift-icon">💖</span>
@@ -496,15 +504,28 @@
         "
       >
         <div class="surprise-inner glass">
-          <h1 class="surprise-h1" style="margin-top: 15px">HAPPY BIRTHDAY</h1>
-          <h2 class="surprise-h2">🌸 My Darling 🌸</h2>
+          <h1 class="surprise-h1" style="margin-top: 15px">To My Love REES</h1>
+          <h2
+            class="surprise-h2"
+            style="display: inline-block; white-space: nowrap"
+          >
+            🌸 The Girl Who Stole My Heart... 🌸
+          </h2>
 
           <p class="surprise-intro-text">
-            My dear, you've graced this world and my life with pure joy:
+            Earth has been a whole lot brighter since you arrived.<br />
+            Here is exactly how long you've been gracing us with your gorgeous
+            existence:
           </p>
 
           <div id="lifeCounter" class="counter-grid"></div>
 
+          <p
+            class="footer-note"
+            style="display: inline-block; white-space: nowrap"
+          >
+            ...and I’ve loved you through every single second of it. <br />❤️
+          </p>
           <div style="margin-top: 25px; width: 100%">
             <button
               class="btn btn-back"
