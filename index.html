@@ -91,84 +91,81 @@
             🏆 <span id="pf">0</span>/<span id="pt">6</span>
           </div>
         </div>
-        <div class="glass" style="padding: clamp(12px, 4vw, 17px)">
+
+        <div
+          class="glass game-card-wrapper"
+          id="gameCardContainer"
+          data-game-state="idle"
+        >
           <div class="gpanel" id="gwin">
             <h2>You Won! 🎉</h2>
-            <p class="gpanel-sub">Amazing! Now explore your gifts...</p>
+            <p class="gpanel-sub">
+              Amazing! Your special rewards are waiting...
+            </p>
             <button class="btn btn-rose" onclick="goTo(3)">
               Choose a Gift 🎁
             </button>
           </div>
-          <div class="gpanel lose" id="glose">
-            <h2>Time's Up!</h2>
-            <p class="gpanel-sub">Try again!</p>
-            <div
-              style="
-                display: flex;
-                gap: 8px;
-                justify-content: center;
-                flex-wrap: wrap;
-              "
-            >
+
+          <div class="gpanel" id="glose">
+            <h2>Time's Up! ⌛</h2>
+            <p class="gpanel-sub">
+              Don't worry, love! Try again or unlock directly.
+            </p>
+            <div class="g-actions">
               <button class="btn btn-blue" onclick="startGame()">
                 Try Again
+              </button>
+              <button
+                class="btn btn-back"
+                style="margin-top: 0"
+                onclick="showPasscodeField()"
+              >
+                Enter Code🔑
               </button>
             </div>
           </div>
 
-          <div
-            id="passcode-container"
-            style="display: none; padding: 15px; text-align: center"
-          >
-            <p
-              style="
-                color: var(--rose);
-                font-weight: 500;
-                font-size: 14px;
-                margin-bottom: 5px;
-              "
-            >
-              Hint: It's our memorable day
-            </p>
-            <input
-              type="password"
-              id="game-passcode"
-              placeholder="Enter Passcode"
-              style="
-                padding: 10px;
-                border-radius: 20px;
-                border: 1px solid #ddd;
-                text-align: center;
-                margin-bottom: 10px;
-                width: 80%;
-                outline: none;
-              "
-            />
-            <div>
-              <button
-                class="btn btn-rose"
-                style="padding: 8px 20px; font-size: 12px"
-                onclick="verifyPasscode()"
-              >
+          <div id="passcode-container" class="gpanel passcode-panel">
+            <p class="hint-text">Hint: It's our memorable day (DDMMYYYY) 💕</p>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="game-passcode"
+                inputmode="numeric"
+                placeholder="••••••••"
+                maxlength="8"
+              />
+            </div>
+            <div class="g-actions">
+              <button class="btn btn-rose" onclick="verifyPasscode()">
                 Submit
+              </button>
+              <button
+                class="btn btn-back"
+                style="margin-top: 0"
+                onclick="initGame()"
+              >
+                Back to Game
               </button>
             </div>
           </div>
 
           <div class="mem-grid" id="mgrid"></div>
         </div>
+
         <div class="g-actions">
           <button class="btn btn-rose" id="sbtn" onclick="startGame()">
             🎀 Start Game
           </button>
-          <button
+          <!-- <button
             class="btn btn-back"
             id="rbtn"
             onclick="startGame()"
             style="display: none"
           >
             Restart
-          </button>
+          </button> -->
           <button
             class="btn btn-back"
             id="skbtn"
@@ -419,7 +416,12 @@
           <span class="cap-word">With</span>
           <span class="cap-word">You</span>
         </div>
-        <div class="script gallery-name">Handsome Birthday Boy 💕</div>
+        <div
+          class="script gallery-name"
+          style="display: inline-block; white-space: nowrap"
+        >
+          My Favorite Views of You 💕
+        </div>
       </div>
       <div class="pol-grid">
         <div class="pol" style="--r: -3">

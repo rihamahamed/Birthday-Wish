@@ -443,7 +443,7 @@ function handleYes(btn) {
 /* ══════════════════════════════════════════
    PAGE 2 — GAME ENGINE COMPONENT
 ══════════════════════════════════════════ */
-const EMOJIS = ["", "🎂", "💝", "🌹", "💌", "🎁"];
+const EMOJIS = ["🍫", "🎂", "💝", "🌹", "💌", "🎁"];
 let gFlipped = [],
   gMatched = 0,
   gMoves = 0;
@@ -452,23 +452,61 @@ let gLive = false,
   gLeft = 30;
 let gLocked = false;
 
+// function initGame() {
+//   const wrapper = document.getElementById("gameCardContainer");
+//   if (wrapper) wrapper.setAttribute("data-game-state", "idle");
+
+//   const g = document.getElementById("mgrid");
+//   if (!g) return;
+
+//   g.innerHTML = "";
+//   document.getElementById("sbtn").style.display = "";
+//   document.getElementById("rbtn").style.display = "none";
+//   document.getElementById("skbtn").style.display = ""; // Keeps bypass visible
+//   document.getElementById("timer").textContent = "30";
+//   document.getElementById("moves").textContent = "0";
+//   document.getElementById("pf").textContent = "0";
+//   document.getElementById("pt").textContent = EMOJIS.length;
+//   document.getElementById("tstat").classList.remove("low");
+//   document.getElementById("game-passcode").value = "";
+
+//   gMoves = 0;
+//   gMatched = 0;
+//   gFlipped = [];
+//   gLeft = 30;
+//   gLive = false;
+//   gLocked = false;
+//   clearInterval(gTid);
+
+//   [...EMOJIS, ...EMOJIS]
+//     .sort(() => Math.random() - 0.5)
+//     .forEach((e) => {
+//       const c = document.createElement("button");
+//       c.className = "mc";
+//       c.dataset.e = e;
+//       c.innerHTML = `<div class="mc-b">🎀</div><div class="mc-f">${e}</div>`;
+//       c.addEventListener("click", () => gFlip(c));
+//       g.appendChild(c);
+//     });
+// }
+
 function initGame() {
+  const wrapper = document.getElementById("gameCardContainer");
+  if (wrapper) wrapper.setAttribute("data-game-state", "idle");
+
   const g = document.getElementById("mgrid");
   if (!g) return;
+
   g.innerHTML = "";
-  g.style.display = "";
-  document.getElementById("passcode-container").style.display = "none";
-  document.getElementById("gwin").classList.remove("show");
-  document.getElementById("glose").classList.remove("show");
   document.getElementById("sbtn").style.display = "";
-  document.getElementById("rbtn").style.display = "none";
-  document.getElementById("skbtn").style.display = "none";
+  document.getElementById("skbtn").style.display = ""; // Keeps skip visible on idle start screen
   document.getElementById("timer").textContent = "30";
   document.getElementById("moves").textContent = "0";
   document.getElementById("pf").textContent = "0";
   document.getElementById("pt").textContent = EMOJIS.length;
   document.getElementById("tstat").classList.remove("low");
   document.getElementById("game-passcode").value = "";
+
   gMoves = 0;
   gMatched = 0;
   gFlipped = [];
@@ -489,11 +527,34 @@ function initGame() {
     });
 }
 
+// function startGame() {
+//   initGame();
+//   const wrapper = document.getElementById("gameCardContainer");
+//   if (wrapper) wrapper.setAttribute("data-game-state", "playing");
+
+//   document.getElementById("sbtn").style.display = "none";
+//   document.getElementById("rbtn").style.display = "";
+//   gLive = true;
+//   gTid = setInterval(() => {
+//     gLeft--;
+//     document.getElementById("timer").textContent = gLeft;
+//     if (gLeft <= 8) document.getElementById("tstat").classList.add("low");
+//     if (gLeft <= 0) {
+//       clearInterval(gTid);
+//       gLive = false;
+//       if (wrapper) wrapper.setAttribute("data-game-state", "lost");
+//     }
+//   }, 1000);
+// }
+
 function startGame() {
   initGame();
+  const wrapper = document.getElementById("gameCardContainer");
+  if (wrapper) wrapper.setAttribute("data-game-state", "playing");
+
   document.getElementById("sbtn").style.display = "none";
-  document.getElementById("rbtn").style.display = "";
-  document.getElementById("skbtn").style.display = "";
+  document.getElementById("skbtn").style.display = ""; // Keeps skip visible while playing standard game loop
+
   gLive = true;
   gTid = setInterval(() => {
     gLeft--;
@@ -502,14 +563,47 @@ function startGame() {
     if (gLeft <= 0) {
       clearInterval(gTid);
       gLive = false;
-      document.getElementById("glose").classList.add("show");
+      if (wrapper) wrapper.setAttribute("data-game-state", "lost");
+
+      // HIDE skip button when times up panel appears
+      document.getElementById("skbtn").style.display = "none";
     }
   }, 1000);
 }
 
+// function showPasscodeField() {
+//   const wrapper = document.getElementById("gameCardContainer");
+//   if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
+
+//   // Auto-focus input for a better user experience on desktop/mobile
+//   setTimeout(() => {
+//     const input = document.getElementById("game-passcode");
+//     if (input) input.focus();
+//   }, 100);
+// }
+
 function showPasscodeField() {
-  document.getElementById("mgrid").style.display = "none";
-  document.getElementById("passcode-container").style.display = "block";
+  const wrapper = document.getElementById("gameCardContainer");
+  if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
+
+  // HIDE skip button when passcode container panel is active
+  document.getElementById("skbtn").style.display = "none";
+
+  setTimeout(() => {
+    const input = document.getElementById("game-passcode");
+    if (input) input.focus();
+  }, 100);
+}
+
+// Modify the inside win section of gFlip() function:
+if (gMatched === EMOJIS.length) {
+  clearInterval(gTid);
+  gLive = false;
+  setTimeout(() => {
+    const wrapper = document.getElementById("gameCardContainer");
+    if (wrapper) wrapper.setAttribute("data-game-state", "won");
+    confettiBurst();
+  }, 500);
 }
 
 function showErrorToast(message) {
@@ -567,14 +661,33 @@ function gFlip(c) {
       gMatched++;
       document.getElementById("pf").textContent = gMatched;
       gFlipped = [];
-
+      // Locate this block in your tile matching validation algorithm inside main.js:
       if (gMatched === EMOJIS.length) {
         clearInterval(gTid);
         gLive = false;
+
         setTimeout(() => {
-          document.getElementById("gwin").classList.add("show");
-          confettiBurst();
-        }, 500);
+          // 1. Target your custom toast notification container
+          const toast = document.getElementById("success-toast");
+          if (toast) {
+            // Customise the toast text for winning the puzzle
+            toast.textContent = "🎉 Match Complete! You Unlocked Your Gifts!";
+            toast.classList.add("show");
+
+            // Auto-hide the success toast after 3 seconds
+            setTimeout(() => {
+              toast.classList.remove("show");
+            }, 3000);
+          }
+
+          // 2. Automatically advance the navigation state machine straight to Page 3 (Gift Hub)
+          goTo(3);
+
+          // 3. Fire the decorative reward animation effects
+          if (typeof confetti !== "undefined") {
+            confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
+          }
+        }, 500); // 500ms delay gives enough breathing space to let the last card finish flipping over smoothly
       }
     } else {
       gLocked = true;
@@ -588,9 +701,6 @@ function gFlip(c) {
   }
 }
 
-/* ══════════════════════════════════════════
-   EMAILJS / VOUCHER COMPONENT SYSTEM
-══════════════════════════════════════════ */
 emailjs.init("fOKIPhBJveSbfrzCZ");
 
 const voucherTexts = [
@@ -718,7 +828,6 @@ function confettiBurst(mini = false) {
     }, i * 18);
 }
 
-/* ── DOM CONTENT LOADED INITIALIZATION ── */
 document.addEventListener("DOMContentLoaded", () => {
   initContinuousFloatingImages();
 
