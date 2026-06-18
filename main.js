@@ -128,10 +128,16 @@ function mountVideo() {
 }
 
 const floatingImagesList = [
-  "img/img.jpeg",
-  "img/img1.jpeg",
-  "img/img2.jpeg",
-  "img/img3.jpeg",
+  "img/floting/img1.jpeg",
+  "img/floting/img2.jpeg",
+  "img/floting/img3.jpeg",
+  "img/floting/img4.jpeg",
+  "img/floting/img5.jpeg",
+  "img/floting/img6.jpeg",
+  "img/floting/img7.jpeg",
+  "img/floting/img8.jpeg",
+  "img/floting/img9.jpeg",
+  "img/floting/img10.jpeg",
 ];
 
 function initContinuousFloatingImages() {
@@ -149,19 +155,26 @@ function initContinuousFloatingImages() {
     if (currentItem.includes(".") || currentItem.startsWith("data:")) {
       imgNode.style.backgroundImage = `url('${currentItem}')`;
       imgNode.style.backgroundSize = "cover";
-      imgNode.style.backgroundPosition = "center";
+
+      imgNode.style.backgroundPosition = "center 20%";
     } else {
-      imgNode.textContent = currentItem;
       imgNode.style.display = "flex";
       imgNode.style.justifyContent = "center";
       imgNode.style.alignItems = "center";
       imgNode.style.fontSize = "2rem";
+      imgNode.textContent = currentItem;
     }
 
+    const randomTop = Math.floor(Math.random() * 50) + 20;
+    imgNode.style.top = `${randomTop}%`;
+
     const leftPosition = i * (100 / totalFloatingElements) + Math.random() * 8;
-    imgNode.style.left = `${leftPosition}%`;
+
+    imgNode.style.left = `${Math.min(leftPosition, 90)}%`;
+
     imgNode.style.animationDelay = `${Math.random() * -20}s`;
     imgNode.style.animationDuration = `${16 + Math.random() * 8}s`;
+
     imgNode.style.setProperty("--sway-x", `${Math.random() * 60 - 30}px`);
 
     container.appendChild(imgNode);
