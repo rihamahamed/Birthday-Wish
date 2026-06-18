@@ -495,6 +495,71 @@ function startGame() {
   }, 1000);
 }
 
+function mountVideo() {
+  const wrap = document.getElementById("yt-wrap");
+  if (!wrap) return;
+  if (wrap.querySelector("video")) return;
+
+  wrap.innerHTML = "";
+  const video = document.createElement("video");
+  video.src = "mp4/video.mp4";
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.controls = true;
+  video.style.width = "100%";
+  video.style.height = "auto";
+  video.style.display = "block";
+  wrap.appendChild(video);
+
+  // --- RE-ARCHITECTED ROMANTIC KARAOKE ENGINE ---
+  // Precise timeline dictionary containing each word index mapped to its exact play runtime (Seconds)
+  const lyricsTimeline = [
+    // Line 1: Mainaavae mainaavae en kanavil (73.0s - 76.0s)
+    { id: 1, start: 73.0, end: 74.0 },
+    { id: 2, start: 74.0, end: 75.0 },
+    { id: 3, start: 75.5, end: 75.9},
+    { id: 4, start: 75.9, end: 77.0 },
+
+    // Line 2: Dhinam dhinam ketkum paadal neethaana (76.0s - 82.0s)
+    { id: 5, start: 77.0, end: 77.8 },
+    { id: 6, start: 77.8, end: 78.6 },
+    { id: 7, start: 78.6, end: 79.5 },
+    { id: 8, start: 79.5, end: 79.8 },
+    { id: 9, start: 79.8, end: 82.0 },
+
+    // Line 3: Hey mainaavae mainaavae en kangal (83.0s - 86.0s)
+    { id: 10, start: 83.0, end: 83.6 },
+    { id: 11, start: 83.6, end: 84.3 },
+    { id: 12, start: 84.3, end: 85.0 },
+    { id: 13, start: 85.0, end: 85.4 },
+    { id: 14, start: 85.4, end: 86.0 },
+
+    // Line 4: Boomiyil thediya thedal neethaana (87.0s - 92.0s)
+    { id: 15, start: 87.0, end: 88.0 },
+    { id: 16, start: 88.0, end: 89.2 },
+    { id: 17, start: 89.2, end: 90.3 },
+    { id: 18, start: 90.3, end: 92.0 },
+  ];
+
+  // Monitor video playback down to microsecond intervals
+  video.addEventListener("timeupdate", () => {
+    const currentTime = video.currentTime;
+
+    lyricsTimeline.forEach((item) => {
+      const wordElement = document.querySelector(`[data-word="${item.id}"]`);
+      if (!wordElement) return;
+
+      // Apply glowing neon class if video runtime falls inside active word boundary
+      if (currentTime >= item.start && currentTime <= item.end) {
+        wordElement.classList.add("active-glow");
+      } else {
+        wordElement.classList.remove("active-glow");
+      }
+    });
+  });
+}
+
 function showPasscodeField() {
   const wrapper = document.getElementById("gameCardContainer");
   if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
