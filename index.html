@@ -14,8 +14,7 @@
     />
 
     <script>
-      let docTitle = document.title;
-
+      const docTitle = document.title;
       window.addEventListener("blur", () => {
         document.title = "Come back! Your surprise is waiting... 🥺💕";
       });
@@ -223,7 +222,14 @@
             <span class="gift-icon">💖</span>
             <div class="gift-lbl">Time You've Bloomed</div>
           </div>
-          
+          <div class="gift-item" id="gift-btn-10" onclick="clickGift(10)">
+            <span class="gift-icon">🗓️</span>
+            <div class="gift-lbl">Our Timeline</div>
+          </div>
+          <div class="gift-item" id="gift-btn-11" onclick="clickGift(11)">
+            <span class="gift-icon">🧩</span>
+            <div class="gift-lbl">Love Quiz</div>
+          </div>
         </div>
       </div>
     </div>
@@ -235,39 +241,15 @@
           <div class="divider">✦ ✦ ✦</div>
           <h2>Happy Birthday My Love...</h2>
           <div class="divider" style="margin-bottom: 15px">✦ ✦ ✦</div>
-
-          <!-- <div class="letter-scroll">
-            <p style="margin-bottom: 14px">
-              Today isn't just about celebrating the day you were born. It's
-              about celebrating the kind of person you are — the strength you
-              carry, the kindness you show, and the way you quietly make my life
-              better just by being in it.
-            </p>
-            <p style="margin-bottom: 14px">
-              You have this way of making everything feel lighter. Even on my
-              most stressful days, your presence brings calm. Your voice feels
-              like home. Your laughter feels like comfort. Your support means
-              more to me than you probably realise.
-            </p>
-            <p style="margin-bottom: 14px">
-              I admire how hardworking, graceful and caring you are. I am so
-              proud of everything you are, and everything you are still
-              becoming. Every day with you is a gift I will never take for
-              granted.
-            </p>
-          </div> -->
-
           <div class="letter-scroll">
             <p style="margin-bottom: 14px">
               <strong>My Dearest Love, ❤️</strong>
             </p>
-
             <p style="margin-bottom: 14px">
               Today isn't just about celebrating the day you were born; it's
               about celebrating the incredible person you are and the beautiful
               place you hold in my heart.
             </p>
-
             <p style="margin-bottom: 14px">
               From the moment you came into my life, everything changed in the
               most wonderful way. You brought happiness to my ordinary days,
@@ -275,7 +257,6 @@
               was missing. Every day with you feels like a blessing, and I find
               myself grateful for you more than words can express.
             </p>
-
             <p style="margin-bottom: 14px">
               You have this special way of making everything feel lighter. On
               the days when I feel stressed or overwhelmed, your presence brings
@@ -284,7 +265,6 @@
               Being loved by you is one of the greatest gifts I have ever
               received.
             </p>
-
             <p style="margin-bottom: 14px">
               What I admire most about you is not only your beauty but also your
               heart. Your kindness, strength, patience, and the way you care for
@@ -292,7 +272,6 @@
               you realize, more beautiful than you believe, and more loved than
               you could ever imagine.
             </p>
-
             <p style="margin-bottom: 14px">
               I am so proud of everything you are and everything you are
               becoming. Watching you grow, achieve your goals, and face life's
@@ -300,14 +279,12 @@
               every happiness, every success, and every beautiful thing this
               world has to offer.
             </p>
-
             <p style="margin-bottom: 14px">
               Thank you for every smile you've given me, every memory we've
               shared, every late-night conversation, every laugh, every moment
               of support, and every piece of love you've placed in my heart. You
               make my life better simply by being in it.
             </p>
-
             <p style="margin-bottom: 14px">
               As you celebrate another year of your beautiful life, I hope this
               year brings you endless joy, good health, success, unforgettable
@@ -315,25 +292,21 @@
               come true, and may every day ahead be filled with reasons to
               smile.
             </p>
-
             <p style="margin-bottom: 14px">
               No matter what the future holds, I promise to cherish you, support
               you, and love you with all my heart. I look forward to making
               countless more memories with you, celebrating many more birthdays
               by your side, and loving you a little more every single day.
             </p>
-
             <p style="margin-bottom: 14px">
               <strong>Happy Birthday, my darling. ❤️</strong>
             </p>
-
             <p style="margin-bottom: 14px">
               You are my favorite person, my greatest blessing, my sweetest
               dream, and the most beautiful chapter of my life. Today, I
               celebrate you, and I thank Allah for bringing you into my world.
             </p>
           </div>
-
           <div
             class="letter-sig"
             style="margin-top: 15px; font-weight: 600; color: var(--rose)"
@@ -355,66 +328,9 @@
       </div>
     </div>
 
-    <!-- <div class="page" id="page-5">
-      <div class="jar-title">Love Jar</div>
-      <p class="jar-sub-txt">Things I love about you...</p>
-      <div class="jar-layout" style="max-width: min(720px, 96vw)">
-        <div class="jar-col" style="align-items: flex-end">
-          <div class="tag tag-blue" style="animation-delay: 0.08s">
-            The way you care for me
-          </div>
-          <div class="tag tag-mauve" style="animation-delay: 0.2s">
-            Always attentive towards me
-          </div>
-          <div class="tag tag-blue" style="animation-delay: 0.34s">
-            The way you solve things after an argument
-          </div>
-        </div>
-        <svg
-          style="
-            width: clamp(100px, 30vw, 140px);
-            flex-shrink: 0;
-            animation: sway 4s ease-in-out infinite;
-          "
-          viewBox="0 0 148 200"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect x="39" y="10" width="70" height="20" rx="6" fill="#c94f6d" />
-          <rect x="32" y="26" width="84" height="10" rx="4" fill="#a83a56" />
-          <path
-            d="M32 36 Q27 75 27 125 Q27 178 74 178 Q121 178 121 125 Q121 75 116 36 Z"
-            fill="rgba(255,255,255,0.55)"
-            stroke="#e0c0c8"
-            stroke-width="1"
-          />
-          <text x="48" y="84" font-size="15">❤️</text>
-          <text x="75" y="74" font-size="11">🩷</text>
-          <text x="58" y="108" font-size="13">❤️</text>
-          <text x="84" y="100" font-size="10">🩷</text>
-          <text x="43" y="136" font-size="15">❤️</text>
-          <text x="94" y="128" font-size="10">🩷</text>
-        </svg>
-        <div class="jar-col" style="align-items: flex-start">
-          <div class="tag tag-rose tag-r" style="animation-delay: 0.12s">
-            The way you understand me
-          </div>
-          <div class="tag tag-mauve tag-r" style="animation-delay: 0.26s">
-            Your beautiful smile
-          </div>
-          <div class="tag tag-rose tag-r" style="animation-delay: 0.4s">
-            Your kind heart
-          </div>
-        </div>
-      </div>
-      <div style="margin-top: 22px; text-align: center">
-        <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
-      </div>
-    </div> -->
-
     <div class="page" id="page-5">
       <div class="jar-title">Love Jar</div>
       <p class="jar-sub-txt">Things I love about you...</p>
-
       <div class="jar-container">
         <div class="jar-wrapper">
           <svg
@@ -438,7 +354,6 @@
             <text x="94" y="128" font-size="10" class="jar-heart">🩷</text>
           </svg>
         </div>
-
         <div class="love-tags-cloud">
           <div class="tag tag-blue" style="animation-delay: 0.1s">
             ✨ The way you care for me
@@ -460,7 +375,6 @@
           </div>
         </div>
       </div>
-
       <div style="margin-top: 30px; text-align: center">
         <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
       </div>
@@ -528,55 +442,11 @@
         </div>
       </div>
     </div>
-    <!-- 
-    <div class="page" id="page-7">
-      <div
-        style="
-          width: 100%;
-          max-width: min(780px, 94vw);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          padding: 0 6px;
-        "
-      >
-        <div class="song-title">Song that reminds me of you</div>
-        <div class="yt-wrap glass" id="yt-wrap" style="width: 100%"></div>
-        <div class="romantic-lyrics-card glass">
-          <div class="lyrics-heart-icon">💖</div>
-          <div class="lyrics-title">Favorite Lyrics</div>
-          <div class="lyrics-content serif" id="lyrics-container">
-            <span data-word="1">Mainaavae</span>
-            <span data-word="2">mainaavae</span> <span data-word="3">en</span>
-            <span data-word="4">kanavil</span><br />
-
-            <span data-word="5">Dhinam</span> <span data-word="6">dhinam</span>
-            <span data-word="7">ketkum</span> <span data-word="8">paadal</span>
-            <span data-word="9">neethaana</span><br />
-
-            <span data-word="10">Hey</span>
-            <span data-word="11">mainaavae</span>
-            <span data-word="12">mainaavae</span> <span data-word="13">en</span>
-            <span data-word="14">kangal</span><br />
-
-            <span data-word="15">Boomiyil</span>
-            <span data-word="16">thediya</span>
-            <span data-word="17">thedal</span>
-            <span data-word="18">neethaana</span>
-          </div>
-          <div class="lyrics-decoration">✨ ─── 🧸 ─── ✨</div>
-        </div>
-        <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
-      </div>
-    </div> -->
 
     <div class="page" id="page-7">
       <div class="page-7-container">
         <div class="song-title">Song that reminds me of you</div>
-
         <div class="yt-wrap glass" id="yt-wrap"></div>
-
         <div class="romantic-lyrics-card glass">
           <div class="lyrics-heart-icon">💖</div>
           <div class="lyrics-title">Favorite Lyrics</div>
@@ -584,16 +454,13 @@
             <span data-word="1">Mainaavae</span>
             <span data-word="2">mainaavae</span> <span data-word="3">en</span>
             <span data-word="4">kanavil</span><br />
-
-            <span data-word="5">Dhinam</span> <span data-word="6">dhinam</span>
+            <span data-word="5">Dhinam dhinam</span>
             <span data-word="7">ketkum</span> <span data-word="8">paadal</span>
             <span data-word="9">neethaana</span><br />
-
             <span data-word="10">Hey</span>
             <span data-word="11">mainaavae</span>
             <span data-word="12">mainaavae</span> <span data-word="13">en</span>
             <span data-word="14">kangal</span><br />
-
             <span data-word="15">Boomiyil</span>
             <span data-word="16">thediya</span>
             <span data-word="17">thedal</span>
@@ -601,7 +468,6 @@
           </div>
           <div class="lyrics-decoration">✨ ─── 🧸 ─── ✨</div>
         </div>
-
         <button class="btn btn-back" onclick="goTo(3)">← Back to Gifts</button>
       </div>
     </div>
@@ -701,15 +567,12 @@
           >
             🌸 The Girl Who Stole My Heart... 🌸
           </h2>
-
           <p class="surprise-intro-text">
             Earth has been a whole lot brighter since you arrived.<br />
             Here is exactly how long you've been gracing us with your gorgeous
             existence:
           </p>
-
           <div id="lifeCounter" class="counter-grid"></div>
-
           <p
             class="footer-note"
             style="display: inline-block; white-space: nowrap"
@@ -729,6 +592,224 @@
         </div>
       </div>
     </div>
+
+    <div class="page page-scroll" id="page-10">
+      <div class="flipbook-wrapper">
+        <div class="timeline-header" style="margin-bottom: 25px">
+          <h2 class="serif timeline-main-title">Our Story Book</h2>
+          <p class="timeline-subtitle">Tap the edge or corners to flip pages</p>
+        </div>
+
+        <div class="book-container">
+          <div class="book-spine"></div>
+
+          <div class="book-page cover-page active" onclick="flipPage(this, 1)">
+            <div class="page-front glass">
+              <div class="cover-content">
+                <span class="heart-icon-decor">💖</span>
+                <h3 class="serif" style="font-size: 26px; color: var(--rose)">
+                  The Chapters of Us
+                </h3>
+                <p
+                  style="
+                    font-size: 13px;
+                    font-style: italic;
+                    margin-top: 10px;
+                    color: var(--mauve);
+                  "
+                >
+                  Our Lifetime Memories
+                </p>
+                <span class="tap-hint">Tap to open ➔</span>
+              </div>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 2)">
+            <div class="page-front glass">
+              <div class="page-num">1</div>
+              <span class="story-emoji">🌱</span>
+              <span class="timeline-date">August 14, 2024</span>
+              <div class="story-img-wrapper">
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="Our First Hello"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">The First Hello</h4>
+              <p class="story-text">
+                The magical day our paths crossed and a beautiful conversation
+                started that changed my life forever.
+              </p>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 3)">
+            <div class="page-front glass">
+              <div class="page-num">2</div>
+              <span class="story-emoji">💘</span>
+              <span class="timeline-date">October 02, 2024</span>
+              <div class="story-img-wrapper">
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="When We Realized"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">When We Realized</h4>
+              <p class="story-text">
+                Late-night calls turned into shared dreams, and we both silently
+                knew this bond was something truly rare.
+              </p>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 4)">
+            <div class="page-front glass">
+              <div class="page-num">3</div>
+              <span class="story-emoji">🧸</span>
+              <span class="timeline-date">January 01, 2025</span>
+              <div class="story-img-wrapper">
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="New Year Chapter"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">New Year Chapter</h4>
+              <p class="story-text">
+                Stepping into a completely new year holding your hand close to
+                my heart, full of hope and pure love.
+              </p>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page final-page">
+            <div class="page-front glass">
+              <div class="page-num">4</div>
+              <span class="story-emoji">🎂</span>
+              <span class="timeline-date">Today</span>
+              <div class="story-img-wrapper">
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="Happy Birthday"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">Happy Birthday!</h4>
+              <p class="story-text">
+                Celebrating the most spectacular person in my world. Looking
+                forward to filling endless more pages together.
+              </p>
+              <div class="lyrics-decoration" style="margin: 10px 0">
+                ✨ ─── 🧸 ─── ✨
+              </div>
+              <button class="btn btn-reset-book" onclick="resetBook()">
+                🔄 Reopen Book
+              </button>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+        </div>
+
+        <div class="timeline-footer" style="margin-top: 30px">
+          <button class="btn btn-back" onclick="goTo(3)">
+            ← Back to Gifts
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page page-scroll" id="page-11">
+      <div class="page-content quiz-page-wrapper">
+        <div class="quiz-header">
+          <h2
+            class="serif"
+            style="color: var(--rose); font-size: 28px; margin-bottom: 5px"
+          >
+            How Well Do You Know Us?
+          </h2>
+          <p class="quiz-subtitle">Test your love memory! 💕</p>
+        </div>
+
+        <div class="olaichuvadi-container">
+          <!-- <div class="olaichuvadi-binding-cord"></div>
+          <div class="olaichuvadi-ring ring-left"></div>
+          <div class="olaichuvadi-ring ring-right"></div>
+          <div class="olaichuvadi-tassel"></div> -->
+
+          <div id="quiz-start-view" class="olaichuvadi-leaf active-leaf">
+            <div class="palm-hole hole-left"></div>
+            <div class="palm-hole hole-right"></div>
+
+            <span class="quiz-decor-emoji">🧩</span>
+            <h3>The Ultimate Love Challenge</h3>
+            <p>
+              Answer 10 magical questions about our beautiful journey together.
+              Let's see your perfect score!
+            </p>
+            <button class="btn btn-rose" onclick="startLoveQuiz()">
+              Start Quiz 💘
+            </button>
+          </div>
+
+          <div id="quiz-question-view" class="olaichuvadi-leaf">
+            <div class="palm-hole hole-left"></div>
+            <div class="palm-hole hole-right"></div>
+
+            <div class="quiz-progress-bar">
+              <div
+                class="quiz-progress-fill"
+                id="quiz-progress-fill"
+                style="width: 10%"
+              ></div>
+            </div>
+            <div class="quiz-meta">
+              <span class="quiz-q-count" id="quiz-q-count">Question 1/10</span>
+              <span class="quiz-score-live" id="quiz-score-live"
+                >✨ Score: 0</span
+              >
+            </div>
+            <h4 id="quiz-question-text" class="serif">
+              Loading magical question...
+            </h4>
+            <div class="quiz-options" id="quiz-options-container"></div>
+          </div>
+
+          <div id="quiz-result-view" class="olaichuvadi-leaf">
+            <div class="palm-hole hole-left"></div>
+            <div class="palm-hole hole-right"></div>
+
+            <span class="quiz-decor-emoji" id="quiz-result-emoji">🏆</span>
+            <h3 id="quiz-result-title">Amazing Job, Love!</h3>
+            <p id="quiz-result-text">Calculating your beautiful score...</p>
+            <div class="email-status-msg" id="quiz-email-status">
+              📬 Sending results to your partner...
+            </div>
+            <button
+              class="btn btn-blue"
+              style="margin-top: 15px"
+              onclick="resetLoveQuiz()"
+            >
+              Try Again 🔄
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-back" style="margin-top: 35px" onclick="goTo(3)">
+          ← Back to Gifts
+        </button>
+      </div>
+    </div>
+
     <div id="final-thoughts-modal" class="modal-backdrop">
       <div
         class="modal-surface glass"
@@ -737,7 +818,6 @@
         <button class="modal-close-btn" onclick="closeThoughtsModal()">
           &times;
         </button>
-
         <div style="padding: 10px 5px">
           <span style="font-size: 32px">🎁 ✨</span>
           <h3
@@ -754,7 +834,6 @@
           <p style="font-size: 13px; color: #666; margin-bottom: 15px">
             Please share your thoughts with me before you leave...
           </p>
-
           <textarea
             id="feedbackText"
             placeholder="Write down whatever is in your heart..."
@@ -772,7 +851,6 @@
               box-sizing: border-box;
             "
           ></textarea>
-
           <button
             class="btn btn-rose"
             style="

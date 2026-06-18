@@ -8,6 +8,7 @@
 }
 
 :root {
+  /* Colors */
   --rose: #d4556e;
   --rose-l: #f7c5d0;
   --rose-d: #9e2a45;
@@ -17,17 +18,20 @@
   --dark: #2a1f26;
   --mauve: #b07d96;
 
+  /* Spacing */
   --sp-xs: 6px;
   --sp-s: 12px;
   --sp-m: 20px;
   --sp-l: 32px;
   --sp-xl: 48px;
 
+  /* Radii */
   --r-s: 10px;
   --r-m: 18px;
   --r-l: 26px;
   --r-pill: 50px;
 
+  /* Font sizes */
   --fs-xs: 11px;
   --fs-s: 13px;
   --fs-base: 15px;
@@ -36,8 +40,15 @@
   --fs-xl: 32px;
   --fs-2xl: 44px;
   --fs-3xl: clamp(36px, 9vw, 62px);
+
+  /* Shared ease curves */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-spring-sm: cubic-bezier(0.175, 0.885, 0.32, 1.15);
 }
 
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 html,
 body {
   height: 100%;
@@ -57,6 +68,9 @@ body {
   font-style: italic;
 }
 
+/* ============================================================
+   FIXED CHROME
+   ============================================================ */
 #bg-canvas {
   position: fixed;
   inset: 0;
@@ -85,11 +99,19 @@ body {
   transition: width 0.4s ease;
 }
 
-#bgm-btn {
+/* Music button — shared backdrop-filter pattern */
+#bgm-btn,
+#bgm-paused-note {
   position: fixed;
-  top: 14px;
   right: 14px;
   z-index: 10000;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+#bgm-btn {
+  top: 14px;
   background: rgba(255, 255, 255, 0.85);
   border: 1px solid var(--rose-l);
   border-radius: 50%;
@@ -101,73 +123,65 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  opacity: 60%;
-  transition: all 0.3s ease;
 }
 #bgm-paused-note {
-  position: fixed;
   top: 60px;
-  right: 14px;
-  z-index: 10000;
   font-size: var(--fs-xs);
   color: var(--mauve);
   background: rgba(255, 255, 255, 0.75);
   padding: 2px 8px;
   border-radius: 6px;
   display: none;
-  opacity: 60%;
-  transition: all 0.3s ease;
 }
 
-.error-toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--dark);
-  color: #fff;
-  padding: 12px 26px;
-  border-radius: var(--r-pill);
-  z-index: 10001;
-  font-weight: 600;
-  font-size: var(--fs-s);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
-  opacity: 0;
-  transition:
-    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    opacity 0.3s ease;
-  pointer-events: none;
-  white-space: nowrap;
-}
-.error-toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
+/* ============================================================
+   TOASTS  (shared base, variant overrides)
+   ============================================================ */
+.error-toast,
 .success-toast {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: rgba(230, 92, 121, 0.95);
   color: #fff;
   padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 13px;
+  border-radius: var(--r-pill);
+  z-index: 10001;
   font-weight: 500;
-  z-index: 9999;
-  box-shadow: 0 4px 15px rgba(230, 92, 121, 0.3);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: var(--fs-s);
   pointer-events: none;
   text-align: center;
   width: max-content;
   max-width: 85vw;
+  transition: transform 0.4s var(--ease-spring);
+}
+.error-toast {
+  bottom: 28px;
+  padding: 12px 26px;
+  background: var(--dark);
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  white-space: nowrap;
+  transition:
+    transform 0.4s var(--ease-spring),
+    opacity 0.3s ease;
+}
+.success-toast {
+  background: rgba(230, 92, 121, 0.95);
+  box-shadow: 0 4px 15px rgba(230, 92, 121, 0.3);
+}
+.error-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
 .success-toast.show {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ============================================================
+   PAGE SYSTEM
+   ============================================================ */
 .page {
   position: fixed;
   inset: 0;
@@ -196,7 +210,7 @@ body {
 }
 
 .page-scroll {
-  overflow-y: hidden;
+  overflow-y: auto;
   padding-top: 56px;
 }
 
@@ -221,6 +235,9 @@ body {
   border-radius: 10px;
 }
 
+/* ============================================================
+   GLASS CARD
+   ============================================================ */
 .glass {
   background: rgba(255, 255, 255, 0.78);
   -webkit-backdrop-filter: blur(18px);
@@ -231,6 +248,9 @@ body {
   box-shadow: 0 12px 32px rgba(42, 31, 38, 0.06);
 }
 
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn {
   border: none;
   border-radius: var(--r-pill);
@@ -270,6 +290,9 @@ body {
   background: rgba(42, 31, 38, 0.12);
 }
 
+/* ============================================================
+   LANDING
+   ============================================================ */
 .landing-ribbon {
   font-size: clamp(36px, 10vw, 52px);
   animation: sway 3s ease-in-out infinite;
@@ -337,14 +360,15 @@ body {
   gap: 2px;
   animation: bounce 2s infinite;
 }
-
 .panda {
   font-size: clamp(46px, 12vw, 64px);
   display: block;
   margin-bottom: 10px;
 }
 
-/* Game Framework Container wrappers */
+/* ============================================================
+   GAME CARD FRAMEWORK
+   ============================================================ */
 .game-card-wrapper {
   padding: clamp(16px, 5vw, 24px);
   width: 100%;
@@ -355,19 +379,17 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.game-card-wrapper[data-game-state="idle"] #mgrid {
-  display: grid;
-}
-.game-card-wrapper[data-game-state="idle"] .gpanel {
-  display: none;
-}
+/* State: idle / playing — show grid, hide panels */
+.game-card-wrapper[data-game-state="idle"] #mgrid,
 .game-card-wrapper[data-game-state="playing"] #mgrid {
   display: grid;
 }
+.game-card-wrapper[data-game-state="idle"] .gpanel,
 .game-card-wrapper[data-game-state="playing"] .gpanel {
   display: none;
 }
 
+/* State: won */
 .game-card-wrapper[data-game-state="won"] #mgrid {
   display: none;
 }
@@ -379,6 +401,7 @@ body {
   display: none;
 }
 
+/* State: lost */
 .game-card-wrapper[data-game-state="lost"] #mgrid {
   display: none;
 }
@@ -390,6 +413,7 @@ body {
   display: none;
 }
 
+/* State: passcode */
 .game-card-wrapper[data-game-state="passcode"] #mgrid {
   display: none;
 }
@@ -402,6 +426,7 @@ body {
   display: none;
 }
 
+/* Passcode panel */
 .passcode-panel {
   display: none;
   flex-direction: column;
@@ -441,6 +466,7 @@ body {
   box-shadow: 0 0 0 3px rgba(214, 85, 110, 0.15);
 }
 
+/* Game header + stats */
 .game-title {
   font-size: clamp(32px, 8vw, 44px);
   color: var(--rose);
@@ -477,6 +503,7 @@ body {
   animation: shake 0.5s infinite;
 }
 
+/* Memory grid + cards */
 .mem-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -509,7 +536,7 @@ body {
   font-size: clamp(15px, 4.5vw, 24px);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.5s var(--ease-spring);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
 }
 .mc-b {
@@ -535,6 +562,7 @@ body {
   transition: all 0.4s ease;
 }
 
+/* Game result panels */
 .gpanel {
   display: none;
   text-align: center;
@@ -564,6 +592,9 @@ body {
   flex-wrap: wrap;
 }
 
+/* ============================================================
+   GIFT HUB
+   ============================================================ */
 .gift-hub-title {
   font-family: "Pinyon Script", cursive;
   font-size: clamp(40px, 11vw, 56px);
@@ -617,6 +648,8 @@ body {
   letter-spacing: 0.2px;
   color: var(--dark);
 }
+
+/* Unlocked checkmark badge */
 .gift-item::after {
   content: "✓";
   position: absolute;
@@ -643,6 +676,9 @@ body {
   right: -16px;
 }
 
+/* ============================================================
+   LOVE LETTER
+   ============================================================ */
 .bouquet {
   font-size: clamp(38px, 10vw, 54px);
   display: block;
@@ -669,6 +705,8 @@ body {
   color: var(--rose-l);
   letter-spacing: 5px;
 }
+
+/* Shared thin scrollbar mixin (reused on .letter-scroll & .page-content) */
 .letter-scroll {
   max-height: clamp(220px, 45vh, 340px);
   overflow-y: auto;
@@ -690,7 +728,9 @@ body {
   border-radius: 10px;
 }
 
-/* --- RE-ARCHITECTED ROMANTIC LOVE JAR SECTION --- */
+/* ============================================================
+   LOVE JAR
+   ============================================================ */
 .jar-title {
   font-family: "Pinyon Script", cursive;
   font-size: clamp(46px, 12vw, 62px);
@@ -698,7 +738,6 @@ body {
   text-align: center;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
-
 .jar-sub-txt {
   text-align: center;
   font-size: var(--fs-s);
@@ -707,7 +746,6 @@ body {
   margin-top: -4px;
   margin-bottom: 28px;
 }
-
 .jar-container {
   display: flex;
   flex-direction: column;
@@ -719,11 +757,9 @@ body {
   margin: 0 auto;
   padding: 0 16px;
 }
-
 .jar-wrapper {
   perspective: 1000px;
 }
-
 .love-jar-svg {
   width: clamp(120px, 25vw, 160px);
   height: auto;
@@ -731,7 +767,6 @@ body {
   filter: drop-shadow(0 10px 20px rgba(224, 192, 200, 0.4));
   animation: floatJar 6s ease-in-out infinite;
 }
-
 .love-tags-cloud {
   display: flex;
   flex-wrap: wrap;
@@ -740,11 +775,10 @@ body {
   width: 100%;
   will-change: transform, opacity;
 }
-
 .tag {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   padding: 10px 16px;
   border-radius: 20px;
   font-size: clamp(12px, 3vw, 14px);
@@ -753,18 +787,18 @@ body {
   box-shadow: 0 6px 16px rgba(224, 192, 200, 0.2);
   opacity: 0;
   transform: translateY(15px);
-  animation: revealTag 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: revealTag 0.8s var(--ease-spring) forwards;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
   cursor: default;
 }
-
 .tag:hover {
   transform: scale(1.05) translateY(-2px);
   box-shadow: 0 8px 20px rgba(224, 192, 200, 0.4);
 }
 
+/* Tag color variants */
 .tag-blue {
   border-left: 3px solid var(--blue);
   background: linear-gradient(
@@ -794,8 +828,10 @@ body {
   animation: heartPulse 3s ease-in-out infinite alternate;
   transform-origin: center;
 }
-/* ------------------------------------------------ */
 
+/* ============================================================
+   VOUCHERS
+   ============================================================ */
 .voucher-title {
   font-family: "Pinyon Script", cursive;
   font-size: clamp(38px, 10vw, 50px);
@@ -868,36 +904,30 @@ body {
   margin-top: 4px;
 }
 
-/* --- RESPONSIVE STRUCTURAL WRAPPER --- */
+/* ============================================================
+   SONG / LYRICS  (page 7)
+   ============================================================ */
 .page-7-container {
   width: 100%;
   max-width: min(780px, 94vw);
-  min-height: 100% !important; /* Allow the container to use full height dynamically */
+  min-height: 100% !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Centers the content vertically on larger screens */
+  justify-content: center;
   gap: 16px;
-  padding: 24px 12px; /* Increased top/bottom padding to protect elements from edge-clipping */
+  padding: 24px 12px;
   box-sizing: border-box;
 }
-
-/* --- THE TITLE (Updated) --- */
 .song-title {
   font-family: "Pinyon Script", cursive;
-  font-size: clamp(
-    38px,
-    6vw,
-    56px
-  ); /* Better scaling factor for wider displays */
+  font-size: clamp(38px, 6vw, 56px);
   color: var(--rose);
   text-align: center;
   margin-bottom: 10px;
-  flex-shrink: 0; /* 🌟 CRITICAL: Prevents flexbox from squeezing/hiding the title */
+  flex-shrink: 0;
   width: 100%;
 }
-
-/* --- MOBILE FIRST DEFAULT LAYOUT (Under 599px) --- */
 .romantic-lyrics-card {
   width: 100%;
   max-width: 340px;
@@ -911,13 +941,11 @@ body {
   margin-top: 4px;
   box-sizing: border-box;
 }
-
 .lyrics-heart-icon {
   font-size: 18px;
   margin-bottom: 2px;
   animation: heartPulse 2.5s ease-in-out infinite alternate;
 }
-
 .lyrics-title {
   font-family: "Poppins", sans-serif;
   font-size: var(--fs-xs);
@@ -927,16 +955,14 @@ body {
   font-weight: 600;
   margin-bottom: 8px;
 }
-
 .lyrics-content {
   font-size: clamp(14px, 4vw, 16px);
-  line-height: 2; /* Roomy padding to block vertical overlaps during active animations */
+  line-height: 2;
   color: var(--rose-d);
   font-weight: 500;
-  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   word-wrap: break-word;
 }
-
 .lyrics-decoration {
   font-size: 10px;
   color: var(--rose-l);
@@ -944,7 +970,7 @@ body {
   letter-spacing: 2px;
 }
 
-/* Unlit inactive word configuration */
+/* Inactive words */
 #lyrics-container span {
   display: inline-block;
   color: rgba(158, 42, 69, 0.35);
@@ -956,80 +982,29 @@ body {
   white-space: nowrap;
   margin: 0 2px;
 }
-
-/* Active Highlight Glow */
+/* Active highlight */
 #lyrics-container span.active-glow {
   color: var(--rose-d) !important;
   text-shadow:
     0 0 10px rgba(214, 85, 110, 0.7),
     0 0 3px rgba(214, 85, 110, 0.3);
-  transform: scale(1.06); /* Balanced mobile scale */
+  transform: scale(1.06);
   font-weight: 700;
 }
 
-/* --- TABLET CONFIGURATIONS (600px and up) --- */
-@media (min-width: 600px) {
-  .page-7-container {
-    gap: 20px;
-  }
-
-  .romantic-lyrics-card {
-    max-width: 480px;
-    padding: 22px 18px;
-  }
-
-  .lyrics-heart-icon {
-    font-size: 20px;
-    margin-bottom: 4px;
-  }
-
-  .lyrics-title {
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-  }
-
-  .lyrics-content {
-    font-size: 17px;
-    line-height: 1.8;
-  }
-
-  #lyrics-container span.active-glow {
-    transform: scale(1.1); /* Medium device scale up */
-  }
-
-  .lyrics-decoration {
-    font-size: 11px;
-    margin-top: 14px;
-    letter-spacing: 3px;
-  }
-}
-
-/* --- DESKTOP CONFIGURATIONS (900px and up) --- */
-@media (min-width: 900px) {
-  .romantic-lyrics-card {
-    max-width: 550px;
-    padding: 26px 22px;
-  }
-
-  .lyrics-content {
-    font-size: 19px;
-    line-height: 1.7;
-  }
-
-  #lyrics-container span.active-glow {
-    transform: scale(1.12); /* Maximum clear screen emphasis */
-  }
-}
 .yt-wrap {
   width: 100%;
-  max-width: 480px; /* Prevents the video element from stretching excessively wide on desktops */
+  max-width: 480px;
   border-radius: 16px;
   overflow: hidden;
   background: #000;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-  flex-shrink: 0; /* Prevents the video frame from collapsing */
+  flex-shrink: 0;
 }
 
+/* ============================================================
+   GALLERY / POLAROIDS
+   ============================================================ */
 .cap-strip {
   display: flex;
   justify-content: center;
@@ -1052,6 +1027,7 @@ body {
   margin-top: 4px;
   text-align: center;
 }
+
 .pol-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1099,6 +1075,9 @@ body {
   text-overflow: ellipsis;
 }
 
+/* ============================================================
+   SURPRISE / COUNTER
+   ============================================================ */
 .surprise-inner {
   width: 100%;
   max-width: 480px;
@@ -1140,20 +1119,23 @@ body {
   height: 100%;
   object-fit: cover;
 }
-.surprise-intro-text {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: clamp(13px, 3.5vw, 16px);
-  color: #666;
-  margin-bottom: 12px;
-}
+
+/* Shared italic serif text */
+.surprise-intro-text,
 .footer-note {
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   font-size: clamp(13px, 3.5vw, 16px);
+}
+.surprise-intro-text {
+  color: #666;
+  margin-bottom: 12px;
+}
+.footer-note {
   color: #555;
   text-align: center;
 }
+
 .counter-grid {
   display: flex;
   flex-direction: column;
@@ -1221,6 +1203,9 @@ body {
   color: #fff;
 }
 
+/* ============================================================
+   PARTICLE / FLOATING ELEMENTS
+   ============================================================ */
 .hp {
   position: fixed;
   pointer-events: none;
@@ -1241,6 +1226,29 @@ body {
   opacity: 0.6;
 }
 
+.floating-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.floating-circle-img {
+  position: absolute;
+  width: clamp(50px, 12vw, 70px);
+  height: clamp(50px, 12vw, 70px);
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(212, 85, 110, 0.25);
+  border: 2px solid #fff;
+  opacity: 0.85;
+  pointer-events: none;
+  animation: continuousFloat 20s linear infinite;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1260,7 +1268,7 @@ body {
 }
 .modal-surface {
   transform: scale(0.9) translateY(15px);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  transition: transform 0.3s var(--ease-spring-sm);
 }
 .modal-backdrop.modal-open .modal-surface {
   transform: scale(1) translateY(0);
@@ -1276,27 +1284,9 @@ body {
   cursor: pointer;
 }
 
-.floating-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  overflow: hidden;
-}
-.floating-circle-img {
-  position: absolute;
-  width: clamp(50px, 12vw, 70px);
-  height: clamp(50px, 12vw, 70px);
-  object-fit: cover;
-  border-radius: 50%;
-  box-shadow: 0 8px 20px rgba(212, 85, 110, 0.25);
-  border: 2px solid #ffffff;
-  opacity: 0.85;
-  pointer-events: none;
-  animation: continuousFloat 20s linear infinite;
-}
-
-/* --- ANIMATION KEYFRAMES --- */
+/* ============================================================
+   ANIMATION KEYFRAMES
+   ============================================================ */
 @keyframes sway {
   0%,
   100% {
@@ -1387,9 +1377,7 @@ body {
     transform: translateY(0) scale(0.7);
     opacity: 0;
   }
-  10% {
-    opacity: 0.7;
-  }
+  10%,
   90% {
     opacity: 0.7;
   }
@@ -1429,7 +1417,9 @@ body {
   }
 }
 
-/* --- RESPONSIVE MEDIA QUERIES --- */
+/* ============================================================
+   RESPONSIVE — mobile narrow  (max 599px)
+   ============================================================ */
 @media (max-width: 599px) {
   .jar-container {
     gap: 16px;
@@ -1457,6 +1447,9 @@ body {
   }
 }
 
+/* ============================================================
+   RESPONSIVE — tablet  (≥ 600px)
+   ============================================================ */
 @media (min-width: 600px) {
   .page {
     padding: var(--sp-l);
@@ -1464,7 +1457,6 @@ body {
   .gift-grid {
     grid-template-columns: repeat(3, 1fr);
     max-width: 520px;
-    gap: var(--sp-m);
   }
   .voucher-card {
     width: 240px;
@@ -1490,8 +1482,38 @@ body {
     max-width: 540px;
     gap: 10px;
   }
+  .page-7-container {
+    gap: 20px;
+  }
+  .romantic-lyrics-card {
+    max-width: 480px;
+    padding: 22px 18px;
+  }
+  .lyrics-heart-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .lyrics-title {
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .lyrics-content {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  .lyrics-decoration {
+    font-size: 11px;
+    margin-top: 14px;
+    letter-spacing: 3px;
+  }
+  #lyrics-container span.active-glow {
+    transform: scale(1.1);
+  }
 }
 
+/* ============================================================
+   RESPONSIVE — desktop  (≥ 900px)
+   ============================================================ */
 @media (min-width: 900px) {
   .page {
     padding: var(--sp-xl);
@@ -1553,8 +1575,25 @@ body {
   .page-content {
     padding: 80px 24px 44px;
   }
+  #page-3 > div {
+    max-width: 820px !important;
+  }
+  .romantic-lyrics-card {
+    max-width: 550px;
+    padding: 26px 22px;
+  }
+  .lyrics-content {
+    font-size: 19px;
+    line-height: 1.7;
+  }
+  #lyrics-container span.active-glow {
+    transform: scale(1.12);
+  }
 }
 
+/* ============================================================
+   RESPONSIVE — wide desktop  (≥ 1280px)
+   ============================================================ */
 @media (min-width: 1280px) {
   .gift-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1574,5 +1613,544 @@ body {
   .surprise-inner {
     max-width: 520px;
     padding: 30px 28px;
+  }
+}
+
+/* ==========================================================================
+   3D FLIP BOOK LAYOUT STYLES - PREMIUM ENHANCED EDITION
+   ========================================================================== */
+
+.flipbook-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1500px; /* Gives the realistic 3D depth perspective */
+  height: 100%;
+}
+
+/* --- Beautiful Title Styling --- */
+.timeline-main-title {
+  color: var(--rose);
+  font-size: clamp(26px, 6vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-top: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.timeline-subtitle {
+  font-size: var(--fs-s);
+  color: var(--mauve);
+  font-style: italic;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+/* --- Book Container Setup --- */
+.book-container {
+  position: relative;
+  width: 100%;
+  max-width: 310px; /* Safe boundaries for compact mobile views */
+  height: calc(var(--vh, 1vh) * 58);
+  min-height: 400px;
+  max-height: 480px;
+  margin: 20px auto;
+}
+
+/* Central book crease depth line decoration */
+.book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.2),
+    rgba(255, 255, 255, 0.25),
+    rgba(0, 0, 0, 0.2)
+  );
+  background-color: var(--rose-d);
+  box-shadow:
+    inset 1px 0 3px rgba(255, 255, 255, 0.2),
+    0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  border-radius: 3px;
+  display: none; /* Shows up on Desktop/Tablet landscape screen splits */
+}
+
+/* Individual Book Sheet Wrap */
+.book-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition:
+    transform 0.7s cubic-bezier(0.25, 1, 0.5, 1),
+    z-index 0.7s,
+    visibility 0.7s;
+  z-index: 1;
+  cursor: pointer;
+
+  /* Mobile: Pages flip cleanly over to the right border */
+  transform-origin: right center;
+}
+
+/* Dynamic Layer Stack Handling */
+.book-page.active {
+  z-index: 5;
+}
+
+.book-page.flipped {
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* Card Surface Base Layout */
+.page-front,
+.page-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--r-m);
+  padding: 26px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  overflow-y: auto; /* Fallback scrolling for tiny mobile devices */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-back {
+  transform: rotateX(180deg);
+  background: var(--cream);
+}
+
+/* --- Inner Page Typography Refinements --- */
+.cover-content {
+  margin: auto 0;
+}
+
+.cover-content .heart-icon-decor {
+  font-size: clamp(40px, 9vw, 48px);
+  display: block;
+  margin-bottom: 15px;
+  animation: heartBeat 2.2s infinite ease-in-out;
+}
+/* --- Story Thumbnail Image Enhancements --- */
+.story-img-wrapper {
+  width: 75px;
+  height: 75px;
+  margin: 8px auto 4px auto;
+  border-radius: 12px; /* Smooth aesthetic corners */
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  flex-shrink: 0; /* Prevents image from squishing on tight viewports */
+}
+
+.story-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Keeps image proportions perfect without distortion */
+  transition: transform 0.3s ease;
+}
+
+/* Minor spacing adjust to prevent layout overflow on smaller devices */
+.story-title {
+  margin: 2px 0 6px 0;
+}
+
+@media (min-width: 768px) {
+  .story-img-wrapper {
+    width: 90px;
+    height: 90px;
+    margin: 12px auto 6px auto;
+  }
+}
+.page-num {
+  position: absolute;
+  bottom: 14px;
+  right: 18px;
+  font-size: var(--fs-xs);
+  color: var(--mauve);
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.story-emoji {
+  font-size: clamp(32px, 7vw, 38px);
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+
+.timeline-date {
+  font-size: var(--fs-xs);
+  color: var(--rose);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.story-title {
+  color: var(--dark);
+  font-size: clamp(17px, 5vw, 20px);
+  font-weight: 600;
+  margin: 4px 0 10px 0;
+}
+
+.story-text {
+  font-size: clamp(12.5px, 3.8vw, 14px);
+  color: #555;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.tap-hint {
+  font-size: 10px;
+  color: var(--rose);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-top: auto;
+  padding-top: 14px;
+  font-weight: 600;
+  animation: pulse 1.5s infinite;
+  opacity: 0.9;
+}
+
+.btn-reset-book {
+  background: transparent;
+  border: 1.5px solid var(--rose);
+  color: var(--rose);
+  padding: 7px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  margin-top: auto;
+  transition: all 0.2s ease;
+}
+
+.btn-reset-book:active {
+  transform: scale(0.95);
+  background: rgba(214, 85, 110, 0.05);
+}
+
+/* ==========================================================================
+   RESPONSIVE SCALING ADAPTATION (Tablet and Desktop Viewports)
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .book-container {
+    max-width: 680px; /* Spreads out side-by-side landscape book layout */
+    height: 450px;
+    max-height: 520px;
+    margin: 25px auto;
+  }
+
+  .book-spine {
+    display: block;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .book-page {
+    width: 50%;
+    left: 50%; /* Pin sheet hinge right against the central spine */
+    transform-origin: left center; /* Swing out outwards from center line */
+  }
+
+  .book-page.flipped {
+    transform: rotateY(-180deg); /* Left turn transformation orientation */
+    z-index: 2;
+  }
+
+  .page-front,
+  .page-back {
+    padding: 30px 24px;
+  }
+}
+
+/* ==========================================================================
+   OLAICHUVADI QUIZ LAYOUT, BINDINGS & RESPONSIVENESS
+   ========================================================================== */
+:root {
+  --palm-wood: #f4ebd0; /* Soft palm-leaf base color */
+  --cord-color: #d4556e; /* Thread color matching your rose theme */
+  --brass-ring: #d4af37; /* Traditional gold/brass ring accent */
+}
+
+.quiz-page-wrapper {
+  perspective: 1200px;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.quiz-subtitle {
+  font-size: var(--fs-s);
+  color: var(--mauve);
+  font-style: italic;
+  margin-bottom: 25px;
+}
+
+/* Container scales smoothly across mobile and desktop */
+.olaichuvadi-container {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  min-height: 360px; /* Enhanced height allowance for long content */
+  margin: 30px auto 0 auto; /* Added top space to accommodate rings */
+}
+
+/* Traditional Binding Thread running across the top */
+.olaichuvadi-binding-cord {
+  position: absolute;
+  top: -12px;
+  left: 15%;
+  width: 70%;
+  height: 3px;
+  background: var(--cord-color);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Binding Rings hanging down through the leaves */
+.olaichuvadi-ring {
+  position: absolute;
+  top: -22px;
+  width: 16px;
+  height: 28px;
+  border: 3px solid var(--brass-ring);
+  border-radius: 50%;
+  z-index: 10;
+  background: transparent;
+  box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.ring-left {
+  left: 20%;
+}
+.ring-right {
+  right: 20%;
+}
+
+/* Decorative hanging thread/tassel on one side */
+.olaichuvadi-tassel {
+  position: absolute;
+  top: -12px;
+  right: 12%;
+  width: 2px;
+  height: 45px;
+  background: var(--cord-color);
+  z-index: 9;
+}
+.olaichuvadi-tassel::after {
+  content: "💖";
+  position: absolute;
+  bottom: -10px;
+  left: -7px;
+  font-size: 12px;
+}
+
+/* Leaf / Scroll Panel Styles */
+.olaichuvadi-leaf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  box-sizing: border-box;
+  /* Soft organic gradient representing aged palm-leaf manuscript */
+  background: linear-gradient(to bottom, #fffdf6 0%, var(--palm-wood) 100%);
+  border: 1px solid rgba(212, 85, 110, 0.2);
+  border-top: 6px solid var(--rose); /* Smooth top edge matching old bound manuscripts */
+  border-radius: 8px 8px 16px 16px;
+  padding: 30px 24px 24px 24px;
+  box-shadow: 0 12px 28px rgba(42, 31, 38, 0.12);
+  display: none;
+  flex-direction: column;
+  justify-content: space-between; /* Keeps layout items spaced uniformly */
+  align-items: center;
+  text-align: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.olaichuvadi-leaf.active-leaf {
+  display: flex;
+  animation: leafFadeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Punch Holes inside the leaf */
+.palm-hole {
+  position: absolute;
+  top: 10px;
+  width: 10px;
+  height: 10px;
+  background: #3a2e2b; /* Dark visual interior hole */
+  border-radius: 50%;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
+  opacity: 0.85;
+}
+.hole-left {
+  left: 21%;
+}
+.hole-right {
+  right: 21%;
+}
+
+/* Custom Olaichuvadi Leaf Pull & Flip Transition Animation */
+.olaichuvadi-leaf.flip-out {
+  animation: olaichuvadiFlip 0.65s cubic-bezier(0.55, 0.055, 0.675, 0.19)
+    forwards;
+}
+
+@keyframes olaichuvadiFlip {
+  0% {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-40px) rotateX(45deg) scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(220px) rotateX(-180deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes leafFadeIn {
+  0% {
+    transform: translateY(-40px) rotateX(45deg) scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotateX(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Inner UI Elements */
+.quiz-decor-emoji {
+  font-size: 40px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mauve);
+  margin-bottom: 12px;
+}
+
+.quiz-progress-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--rose);
+  transition: width 0.4s ease;
+}
+
+#quiz-question-text {
+  font-size: 16px;
+  color: #2c1a1d;
+  margin-bottom: 15px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.quiz-opt-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(42, 31, 38, 0.15);
+  border-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c1a1d;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.quiz-opt-btn:hover {
+  background: var(--rose-l, #ffeef1);
+  border-color: var(--rose);
+  transform: translateX(3px);
+}
+
+.quiz-opt-btn.correct-choice {
+  background: #2ec4b6 !important;
+  color: #fff !important;
+  border-color: #2ec4b6 !important;
+}
+
+.quiz-opt-btn.wrong-choice {
+  background: var(--rose) !important;
+  color: #fff !important;
+  border-color: var(--rose) !important;
+}
+
+.email-status-msg {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* Responsive Scaling for Small Displays */
+@media (max-width: 400px) {
+  .olaichuvadi-container {
+    min-height: 380px;
+  }
+  .olaichuvadi-leaf {
+    padding: 26px 16px 16px 16px;
+    min-height: 380px;
+  }
+  #quiz-question-text {
+    font-size: 15px;
+  }
+  .quiz-opt-btn {
+    padding: 8px 14px;
+    font-size: 12px;
   }
 }

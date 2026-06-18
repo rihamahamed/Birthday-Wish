@@ -7,7 +7,17 @@ function setVH() {
 setVH();
 window.addEventListener("resize", setVH);
 
-let bgm = new Audio("mp3/music.mp3");
+emailjs.init("fOKIPhBJveSbfrzCZ");
+
+const EMAIL_CONFIG = {
+  SERVICE_ID: "service_94av9sb",
+  TEMPLATES: {
+    //VOUCHER_ENGINE: "template_trj4znn",
+    BOX_ENGINE: "template_6onz6ji",
+  },
+};
+
+const bgm = new Audio("mp3/music.mp3");
 bgm.loop = true;
 bgm.volume = 0.5;
 
@@ -69,8 +79,7 @@ document.addEventListener("touchstart", autoStartBGM, { once: true });
 
 function mountVideo() {
   const wrap = document.getElementById("yt-wrap");
-  if (!wrap) return;
-  if (wrap.querySelector("video")) return;
+  if (!wrap || wrap.querySelector("video")) return;
 
   wrap.innerHTML = "";
   const video = document.createElement("video");
@@ -83,11 +92,39 @@ function mountVideo() {
   video.style.height = "auto";
   video.style.display = "block";
   wrap.appendChild(video);
-}
 
-function destroyVideo() {
-  const wrap = document.getElementById("yt-wrap");
-  if (wrap) wrap.innerHTML = "";
+  const lyricsTimeline = [
+    { id: 1, start: 73.0, end: 74.21 },
+    { id: 2, start: 74.21, end: 75.21 },
+    { id: 3, start: 75.21, end: 76.17 },
+    { id: 4, start: 76.17, end: 77.01 },
+    { id: 5, start: 77.01, end: 77.29 },
+    { id: 7, start: 77.29, end: 78.13 },
+    { id: 8, start: 78.13, end: 79.25 },
+    { id: 9, start: 79.25, end: 81.25 },
+    { id: 10, start: 81.25, end: 83.18 },
+    { id: 11, start: 83.18, end: 84.28 },
+    { id: 12, start: 84.28, end: 85.16 },
+    { id: 13, start: 85.16, end: 86.02 },
+    { id: 14, start: 86.02, end: 86.28 },
+    { id: 15, start: 86.28, end: 87.17 },
+    { id: 16, start: 87.17, end: 88.22 },
+    { id: 17, start: 88.22, end: 90.15 },
+    { id: 18, start: 90.15, end: 95.0 },
+  ];
+
+  video.addEventListener("timeupdate", () => {
+    const currentTime = video.currentTime;
+    lyricsTimeline.forEach((item) => {
+      const wordElement = document.querySelector(`[data-word="${item.id}"]`);
+      if (!wordElement) return;
+      if (currentTime >= item.start && currentTime <= item.end) {
+        wordElement.classList.add("active-glow");
+      } else {
+        wordElement.classList.remove("active-glow");
+      }
+    });
+  });
 }
 
 const floatingImagesList = [
@@ -102,11 +139,11 @@ function initContinuousFloatingImages() {
   if (!container) return;
 
   const totalFloatingElements = 6;
+  container.innerHTML = "";
 
   for (let i = 0; i < totalFloatingElements; i++) {
     const imgNode = document.createElement("div");
     imgNode.className = "floating-circle-img";
-
     const currentItem = floatingImagesList[i % floatingImagesList.length];
 
     if (currentItem.includes(".") || currentItem.startsWith("data:")) {
@@ -123,15 +160,9 @@ function initContinuousFloatingImages() {
 
     const leftPosition = i * (100 / totalFloatingElements) + Math.random() * 8;
     imgNode.style.left = `${leftPosition}%`;
-
-    const randomDelay = Math.random() * -20;
-    imgNode.style.animationDelay = `${randomDelay}s`;
-
-    const randomDuration = 16 + Math.random() * 8;
-    imgNode.style.animationDuration = `${randomDuration}s`;
-
-    const swayDistance = Math.random() * 60 - 30;
-    imgNode.style.setProperty("--sway-x", `${swayDistance}px`);
+    imgNode.style.animationDelay = `${Math.random() * -20}s`;
+    imgNode.style.animationDuration = `${16 + Math.random() * 8}s`;
+    imgNode.style.setProperty("--sway-x", `${Math.random() * 60 - 30}px`);
 
     container.appendChild(imgNode);
   }
@@ -148,13 +179,14 @@ const PAGES = [
   "page-7",
   "page-8",
   "page-9",
+  "page-10",
+  "page-11",
 ];
 let cur = 0;
-let viewedGifts = new Set();
+const viewedGifts = new Set();
 
 function clickGift(pageIndex) {
   viewedGifts.add(pageIndex);
-
   const element = document.getElementById("gift-btn-" + pageIndex);
   if (element) {
     element.style.border = "1px dashed var(--rose)";
@@ -164,14 +196,9 @@ function clickGift(pageIndex) {
 }
 
 function checkAllGiftsCompleted() {
-  if (
-    viewedGifts.has(4) &&
-    viewedGifts.has(5) &&
-    viewedGifts.has(6) &&
-    viewedGifts.has(7) &&
-    viewedGifts.has(8) &&
-    viewedGifts.has(9)
-  ) {
+  const mandatoryGifts = [4, 5, 6, 7, 8, 9, 10, 11];
+  const allDone = mandatoryGifts.every((g) => viewedGifts.has(g));
+  if (allDone) {
     const thoughtsModal = document.getElementById("final-thoughts-modal");
     if (thoughtsModal && !thoughtsModal.classList.contains("modal-open")) {
       setTimeout(() => {
@@ -188,52 +215,56 @@ function closeThoughtsModal() {
 
 function goTo(idx) {
   const ov = document.getElementById("overlay");
+  if (!ov) return;
   ov.style.opacity = 1;
 
   if (cur === 9) {
     clearInterval(lifeInterval);
     lifeInterval = null;
   }
-
   if (cur === 7) {
-    destroyVideo();
+    const wrap = document.getElementById("yt-wrap");
+    if (wrap) wrap.innerHTML = "";
     resumeBGMAfterSong();
   }
 
   setTimeout(() => {
     PAGES.forEach((id) => {
       const el = document.getElementById(id);
-      el.classList.remove("active", "visible");
-      el.scrollTop = 0;
+      if (el) {
+        el.classList.remove("active", "visible");
+        el.scrollTop = 0;
+      }
     });
+
     cur = idx;
     const t = document.getElementById(PAGES[idx]);
-    t.classList.add("active");
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() => t.classList.add("visible")),
-    );
+    if (t) {
+      t.classList.add("active");
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => t.classList.add("visible")),
+      );
+    }
+
     updateProg();
     ov.style.opacity = 0;
 
     if (idx === 2) initGame();
     if (idx === 3) checkAllGiftsCompleted();
-
     if (idx === 7) {
       pauseBGMForSong();
       setTimeout(mountVideo, 350);
     }
-
     if (idx === 6) restoreVoucherState();
-
-    if (idx === 9) {
-      startDirectLifeCounter();
-    }
+    if (idx === 9) startDirectLifeCounter();
   }, 310);
 }
 
 function updateProg() {
-  document.getElementById("prog").style.width =
-    Math.round((cur / 9) * 100) + "%";
+  const progBar = document.getElementById("prog");
+  if (progBar) {
+    progBar.style.width = Math.round((cur / (PAGES.length - 1)) * 100) + "%";
+  }
 }
 
 let lifeInterval = null;
@@ -242,8 +273,8 @@ function startDirectLifeCounter() {
   if (lifeInterval) clearInterval(lifeInterval);
 
   function updateLife() {
-    const birth = new Date("2001-07-02T00:00:00"),
-      now = new Date();
+    const birth = new Date("2001-07-02T00:00:00");
+    const now = new Date();
     let Y = now.getFullYear() - birth.getFullYear();
     let M = now.getMonth() - birth.getMonth();
     let D = now.getDate() - birth.getDate();
@@ -275,37 +306,269 @@ function startDirectLifeCounter() {
     const counterEl = document.getElementById("lifeCounter");
     if (counterEl) {
       counterEl.innerHTML = `
-        <div class="counter-row">
-          <span class="counter-num">${Y}</span>
-          <span class="counter-label">✨ Wonderful Years</span>
-        </div>
-        <div class="counter-row">
-          <span class="counter-num">${M}</span>
-
-          <span class="counter-label">🌙 Enchanting Months</span>
-        </div>
-        <div class="counter-row">
-          <span class="counter-num">${D}</span>
-          <span class="counter-label">📅 Precious Days</span>
-        </div>
-        <div class="counter-row">
-          <span class="counter-num">${h}</span>
-          <span class="counter-label">⏱️ Tender Hours</span>
-        </div>
-        <div class="counter-row">
-          <span class="counter-num">${m}</span>
-          <span class="counter-label">💓 Heartfelt Minutes</span>
-        </div>
-        <div class="counter-row">
-          <span class="counter-num">${s}</span>
-          <span class="counter-label">💖 Sparkling Seconds</span>
-        </div>
+        <div class="counter-row"><span class="counter-num">${Y}</span><span class="counter-label">✨ Wonderful Years</span></div>
+        <div class="counter-row"><span class="counter-num">${M}</span><span class="counter-label">🌙 Enchanting Months</span></div>
+        <div class="counter-row"><span class="counter-num">${D}</span><span class="counter-label">📅 Precious Days</span></div>
+        <div class="counter-row"><span class="counter-num">${h}</span><span class="counter-label">⏱️ Tender Hours</span></div>
+        <div class="counter-row"><span class="counter-num">${m}</span><span class="counter-label">💓 Heartfelt Minutes</span></div>
+        <div class="counter-row"><span class="counter-num">${s}</span><span class="counter-label">💖 Sparkling Seconds</span></div>
       `;
     }
   }
-
   updateLife();
   lifeInterval = setInterval(updateLife, 1000);
+}
+
+function flipPage(element, nextIndex) {
+  element.classList.remove("active");
+  element.classList.add("flipped");
+
+  if (window.innerWidth < 768) {
+    setTimeout(() => {
+      if (element.classList.contains("flipped")) {
+        element.style.display = "none";
+      }
+    }, 600);
+  }
+
+  const pages = document.querySelectorAll("#page-10 .book-page");
+  if (pages[nextIndex]) {
+    pages[nextIndex].style.display = "block";
+    pages[nextIndex].classList.add("active");
+  } else {
+    const finalPage = document.querySelector("#page-10 .final-page");
+    if (finalPage) {
+      finalPage.style.display = "block";
+      finalPage.classList.add("active");
+    }
+  }
+}
+
+const QUIZ_QUESTIONS = [
+  {
+    q: "Where did we first start talking? 💕",
+    o: ["WhatsApp", "Instagram", "Facebook", "Snapchat"],
+    a: 1,
+  },
+  {
+    q: "What made us become closer? ❤️",
+    o: ["Our long chats", "Our jokes", "Our trust", "Everything"],
+    a: 3,
+  },
+  {
+    q: "What do we enjoy doing together the most? 🥰",
+    o: [
+      "Talking for hours",
+      "Laughing together",
+      "Making memories",
+      "All of these",
+    ],
+    a: 3,
+  },
+  {
+    q: "What is my favorite thing about you? 💖",
+    o: ["Your smile", "Your kindness", "Your voice", "Everything"],
+    a: 3,
+  },
+  {
+    q: "What do I miss the most when we're apart? 😘",
+    o: ["Your messages", "Your voice", "Your smile", "All of them"],
+    a: 3,
+  },
+  {
+    q: "What nickname do I love calling you? 💕",
+    o: ["Darling", "Minji", "Cutie", "Angel"],
+    a: 1,
+  },
+  {
+    q: "What makes our relationship special? ✨",
+    o: ["Love", "Trust", "Understanding", "All of these"],
+    a: 3,
+  },
+  {
+    q: "How do I feel when I see your message? 📱❤️",
+    o: ["Happy", "Excited", "Butterflies", "All of the above"],
+    a: 3,
+  },
+  {
+    q: "What is our dream for the future? 🌹",
+    o: [
+      "More memories",
+      "More adventures",
+      "A happy life together",
+      "All of these",
+    ],
+    a: 3,
+  },
+  {
+    q: "What will I always choose? ❤️",
+    o: ["You", "You", "You", "Always You"],
+    a: 3,
+  },
+];
+
+let quizCurrentIndex = 0;
+let quizScore = 0;
+let quizAnswersLog = [];
+let optionsClickable = true;
+
+function startLoveQuiz() {
+  quizCurrentIndex = 0;
+  quizScore = 0;
+  quizAnswersLog = [];
+  optionsClickable = true;
+  switchLeafView("quiz-start-view", "quiz-question-view");
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  optionsClickable = true;
+  const currentData = QUIZ_QUESTIONS[quizCurrentIndex];
+
+  document.getElementById("quiz-q-count").textContent =
+    `Question ${quizCurrentIndex + 1}/${QUIZ_QUESTIONS.length}`;
+  document.getElementById("quiz-score-live").textContent =
+    `✨ Score: ${quizScore}`;
+  document.getElementById("quiz-progress-fill").style.width =
+    `${((quizCurrentIndex + 1) / QUIZ_QUESTIONS.length) * 100}%`;
+  document.getElementById("quiz-question-text").textContent = currentData.q;
+
+  const container = document.getElementById("quiz-options-container");
+  container.innerHTML = "";
+
+  currentData.o.forEach((optionText, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "quiz-opt-btn";
+    btn.textContent = optionText;
+    btn.onclick = () => handleOptionSelection(idx, btn);
+    container.appendChild(btn);
+  });
+}
+
+function handleOptionSelection(selectedIndex, selectedBtn) {
+  if (!optionsClickable) return;
+  optionsClickable = false;
+
+  const currentData = QUIZ_QUESTIONS[quizCurrentIndex];
+  const correctIdx = currentData.a;
+
+  quizAnswersLog.push({
+    question: currentData.q,
+    chosen: currentData.o[selectedIndex],
+    correct: currentData.o[correctIdx],
+    isCorrect: selectedIndex === correctIdx,
+  });
+
+  const buttons = document.querySelectorAll(".quiz-opt-btn");
+
+  if (selectedIndex === correctIdx) {
+    quizScore++;
+    selectedBtn.classList.add("correct-choice");
+    document.getElementById("quiz-score-live").textContent =
+      `✨ Score: ${quizScore}`;
+    if (typeof confetti !== "undefined") {
+      confetti({ particleCount: 30, spread: 40, origin: { y: 0.7 } });
+    }
+  } else {
+    selectedBtn.classList.add("wrong-choice");
+    buttons[correctIdx].classList.add("correct-choice");
+  }
+
+  setTimeout(() => {
+    quizCurrentIndex++;
+    if (quizCurrentIndex < QUIZ_QUESTIONS.length) {
+      animateLeafTransition();
+    } else {
+      displayQuizResults();
+    }
+  }, 1200);
+}
+
+function animateLeafTransition() {
+  const targetLeaf = document.getElementById("quiz-question-view");
+  if (!targetLeaf) return;
+  targetLeaf.classList.add("flip-out");
+  setTimeout(() => {
+    targetLeaf.classList.remove("flip-out");
+    renderQuizQuestion();
+  }, 600);
+}
+
+function displayQuizResults() {
+  switchLeafView("quiz-question-view", "quiz-result-view");
+
+  const resultTitle = document.getElementById("quiz-result-title");
+  const resultText = document.getElementById("quiz-result-text");
+  const resultEmoji = document.getElementById("quiz-result-emoji");
+  const percentage = (quizScore / QUIZ_QUESTIONS.length) * 100;
+
+  if (percentage >= 80) {
+    resultTitle.textContent = "True Soulmate! 👑❤️";
+    resultText.textContent = `Wow, you got ${quizScore}/10! You know our story down to every single detail. I love you so much!`;
+    resultEmoji.textContent = "👑";
+    if (typeof confetti !== "undefined")
+      confetti({ particleCount: 150, spread: 80 });
+  } else if (percentage >= 50) {
+    resultTitle.textContent = "Sweet Partner! 💕";
+    resultText.textContent = `Great effort! You scored ${quizScore}/10. Our memories are held so beautifully in your heart.`;
+    resultEmoji.textContent = "💖";
+  } else {
+    resultTitle.textContent = "Keep Making Memories! 🧸";
+    resultText.textContent = `You scored ${quizScore}/10. Let's make endless more chapters to look back onto together!`;
+    resultEmoji.textContent = "🧸";
+  }
+  dispatchQuizEmail();
+}
+
+function dispatchQuizEmail() {
+  const statusEl = document.getElementById("quiz-email-status");
+  if (!statusEl) return;
+  statusEl.textContent =
+    "📬 Dispatching results to your partner via EmailJS...";
+
+  let breakdown = quizAnswersLog
+    .map(
+      (item, idx) =>
+        `${idx + 1}. Q: ${item.question}\n   Chosen: ${item.chosen} (${item.isCorrect ? "✓ Correct" : "✗ Wrong"})\n   Correct: ${item.correct}`,
+    )
+    .join("\n\n");
+
+  const scoreHtml = `
+    <div style="margin:10px auto 20px auto; padding:12px 25px; background:#ffffff; border:2px solid #6b91c9; display:inline-block; border-radius:30px;">
+      <strong style="font-size:22px; color:#6b91c9;">${quizScore} / ${QUIZ_QUESTIONS.length} (${(quizScore / QUIZ_QUESTIONS.length) * 100}%)</strong>
+    </div>
+  `;
+
+  emailjs
+    .send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATES.BOX_ENGINE, {
+      email_subject: `🏆 Love Quiz Completed! — Score: ${quizScore}/10`,
+      title_color: "#6b91c9",
+      main_title: "🏆 Love Quiz Completed!",
+      intro_message:
+        "Your partner just completed the history quiz with a score of:",
+      quiz_score_html: scoreHtml,
+      border_color: "#b07d96",
+      main_content_payload: breakdown,
+      footer_note: "Sent automatically from Page 11 Quiz section. ✨",
+    })
+    .then(() => {
+      statusEl.textContent =
+        "💌 Quiz scores safely arrived in your partner's inbox!";
+    })
+    .catch((err) => {
+      console.error("Quiz dispatch error:", err);
+      statusEl.textContent =
+        "💝 Quiz completed! Layout configuration error occurred.";
+    });
+}
+
+function switchLeafView(hideId, showId) {
+  document.getElementById(hideId).classList.remove("active-leaf");
+  document.getElementById(showId).classList.add("active-leaf");
+}
+
+function resetLoveQuiz() {
+  switchLeafView("quiz-result-view", "quiz-start-view");
 }
 
 (function () {
@@ -317,8 +580,8 @@ function startDirectLifeCounter() {
     pts = [];
 
   function resize() {
-    W = cv.width = innerWidth;
-    H = cv.height = innerHeight;
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
   }
   resize();
   window.addEventListener("resize", resize);
@@ -392,7 +655,7 @@ function startDirectLifeCounter() {
 const HH = ["💕", "💗", "💖", "💝", "🩷", "❤️"];
 
 function spawnHearts(x, y, n = 10) {
-  for (let i = 0; i < n; i++)
+  for (let i = 0; i < n; i++) {
     setTimeout(() => {
       const d = document.createElement("div");
       d.className = "hp";
@@ -404,6 +667,7 @@ function spawnHearts(x, y, n = 10) {
       document.body.appendChild(d);
       setTimeout(() => d.remove(), 2000);
     }, i * 48);
+  }
 }
 
 document.addEventListener("click", function (e) {
@@ -444,7 +708,7 @@ function initGame() {
 
   g.innerHTML = "";
   document.getElementById("sbtn").style.display = "";
-  document.getElementById("skbtn").style.display = ""; // Keeps skip visible on idle start screen
+  document.getElementById("skbtn").style.display = "";
   document.getElementById("timer").textContent = "30";
   document.getElementById("moves").textContent = "0";
   document.getElementById("pf").textContent = "0";
@@ -478,7 +742,7 @@ function startGame() {
   if (wrapper) wrapper.setAttribute("data-game-state", "playing");
 
   document.getElementById("sbtn").style.display = "none";
-  document.getElementById("skbtn").style.display = ""; // Keeps skip visible while playing standard game loop
+  document.getElementById("skbtn").style.display = "";
 
   gLive = true;
   gTid = setInterval(() => {
@@ -489,81 +753,14 @@ function startGame() {
       clearInterval(gTid);
       gLive = false;
       if (wrapper) wrapper.setAttribute("data-game-state", "lost");
-
       document.getElementById("skbtn").style.display = "none";
     }
   }, 1000);
 }
 
-function mountVideo() {
-  const wrap = document.getElementById("yt-wrap");
-  if (!wrap) return;
-  if (wrap.querySelector("video")) return;
-
-  wrap.innerHTML = "";
-  const video = document.createElement("video");
-  video.src = "mp4/video.mp4";
-  video.autoplay = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.controls = true;
-  video.style.width = "100%";
-  video.style.height = "auto";
-  video.style.display = "block";
-  wrap.appendChild(video);
-
-  // --- RE-ARCHITECTED ROMANTIC KARAOKE ENGINE ---
-  // Precise timeline dictionary containing each word index mapped to its exact play runtime (Seconds)
-  const lyricsTimeline = [
-    // Line 1: Mainaavae mainaavae en kanavil (73.0s - 76.0s)
-    { id: 1, start: 73.0, end: 74.0 },
-    { id: 2, start: 74.0, end: 75.0 },
-    { id: 3, start: 75.5, end: 75.9},
-    { id: 4, start: 75.9, end: 77.0 },
-
-    // Line 2: Dhinam dhinam ketkum paadal neethaana (76.0s - 82.0s)
-    { id: 5, start: 77.0, end: 77.8 },
-    { id: 6, start: 77.8, end: 78.6 },
-    { id: 7, start: 78.6, end: 79.5 },
-    { id: 8, start: 79.5, end: 79.8 },
-    { id: 9, start: 79.8, end: 82.0 },
-
-    // Line 3: Hey mainaavae mainaavae en kangal (83.0s - 86.0s)
-    { id: 10, start: 83.0, end: 83.6 },
-    { id: 11, start: 83.6, end: 84.3 },
-    { id: 12, start: 84.3, end: 85.0 },
-    { id: 13, start: 85.0, end: 85.4 },
-    { id: 14, start: 85.4, end: 86.0 },
-
-    // Line 4: Boomiyil thediya thedal neethaana (87.0s - 92.0s)
-    { id: 15, start: 87.0, end: 88.0 },
-    { id: 16, start: 88.0, end: 89.2 },
-    { id: 17, start: 89.2, end: 90.3 },
-    { id: 18, start: 90.3, end: 92.0 },
-  ];
-
-  // Monitor video playback down to microsecond intervals
-  video.addEventListener("timeupdate", () => {
-    const currentTime = video.currentTime;
-
-    lyricsTimeline.forEach((item) => {
-      const wordElement = document.querySelector(`[data-word="${item.id}"]`);
-      if (!wordElement) return;
-
-      // Apply glowing neon class if video runtime falls inside active word boundary
-      if (currentTime >= item.start && currentTime <= item.end) {
-        wordElement.classList.add("active-glow");
-      } else {
-        wordElement.classList.remove("active-glow");
-      }
-    });
-  });
-}
-
 function showPasscodeField() {
   const wrapper = document.getElementById("gameCardContainer");
   if (wrapper) wrapper.setAttribute("data-game-state", "passcode");
-
   document.getElementById("skbtn").style.display = "none";
 
   setTimeout(() => {
@@ -572,30 +769,13 @@ function showPasscodeField() {
   }, 100);
 }
 
-if (gMatched === EMOJIS.length) {
-  clearInterval(gTid);
-  gLive = false;
-  setTimeout(() => {
-    const wrapper = document.getElementById("gameCardContainer");
-    if (wrapper) wrapper.setAttribute("data-game-state", "won");
-    confettiBurst();
-  }, 500);
-}
-
 function showErrorToast(message) {
   const toast = document.getElementById("error-toast");
   if (!toast) return;
-
   toast.textContent = message;
   toast.classList.add("show");
-
-  if (navigator.vibrate) {
-    navigator.vibrate(100);
-  }
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
+  if (navigator.vibrate) navigator.vibrate(100);
+  setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
 function verifyPasscode() {
@@ -604,9 +784,7 @@ function verifyPasscode() {
     clearInterval(gTid);
     gLive = false;
     showSuccessToast("✨ Code Accepted! Unlocking gifts...");
-    setTimeout(() => {
-      goTo(3);
-    }, 1000);
+    setTimeout(() => goTo(3), 1000);
   } else {
     const teasingMessages = [
       "Hmm... are you sure you love me? 😂 Try again! 💕",
@@ -614,9 +792,9 @@ function verifyPasscode() {
       "Wrong passcode! Do I need to remind you of our special day? 🤔❤️",
       "Aieee! That's not it! Guess closer to our hearts... ✨",
     ];
-    const randomMessage =
-      teasingMessages[Math.floor(Math.random() * teasingMessages.length)];
-    showErrorToast(randomMessage);
+    showErrorToast(
+      teasingMessages[Math.floor(Math.random() * teasingMessages.length)],
+    );
   }
 }
 
@@ -637,23 +815,13 @@ function gFlip(c) {
       gMatched++;
       document.getElementById("pf").textContent = gMatched;
       gFlipped = [];
+
       if (gMatched === EMOJIS.length) {
         clearInterval(gTid);
         gLive = false;
-
         setTimeout(() => {
-          const toast = document.getElementById("success-toast");
-          if (toast) {
-            toast.textContent = "🎉 Match Complete! You Unlocked Your Gifts!";
-            toast.classList.add("show");
-
-            setTimeout(() => {
-              toast.classList.remove("show");
-            }, 3000);
-          }
-
+          showSuccessToast("🎉 Match Complete! You Unlocked Your Gifts!");
           goTo(3);
-
           if (typeof confetti !== "undefined") {
             confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
           }
@@ -671,15 +839,12 @@ function gFlip(c) {
   }
 }
 
-emailjs.init("fOKIPhBJveSbfrzCZ");
-
 const voucherTexts = [
   "Free Birthday Shopping — redeem anytime! 🛍️",
   "Movie Night With You — your pick, my treat! 🎬",
   "Your Most Loved Dessert — I'll take you there! 🍰",
 ];
 const voucherIcons = ["🛍️", "🎬", "🍰"];
-
 let selectedVoucherIndex = null;
 let redeemedVoucher = null;
 
@@ -731,18 +896,44 @@ function claimVoucher() {
   if (tag) tag.classList.add("redeemed");
 
   document.getElementById("voucher-popup").style.display = "none";
-  sendEmail(idx);
+  sendVoucherEmail(idx);
   showSuccessToast("🎉 Voucher Claimed Successfully!");
   selectedVoucherIndex = null;
 }
 
-function sendEmail(idx) {
-  emailjs
-    .send("service_94av9sb", "template_trj4znn", {
-      voucher_name: voucherTexts[idx],
-    })
-    .then(() => console.log("Email sent ✔"))
-    .catch((err) => console.warn("Email error:", err));
+function sendVoucherEmail(idx) {
+  emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATES.BOX_ENGINE, {
+    email_subject: `🎁 Voucher Claimed Successfully! — ${voucherTexts[idx]}`,
+    bg_color: "#fff5f8",
+    accent_color: "#d94f70",
+    text_color: "#444444",
+    main_title: "Voucher Claimed Successfully!",
+    intro_message: "You have redeemed the following voucher pass:",
+    card_bg: "#ffffff",
+    card_border: "2px dashed #f3a6b8",
+    card_label: "REDEEMED ITEM",
+    card_text_color: "#333333",
+    main_content_payload: voucherTexts[idx],
+    footer_color: "#888888",
+    footer_note: "This is an automated birthday voucher system 💕",
+  });
+  emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATES.VOUCHER_ENGINE, {
+    email_subject: `👑 Your Golden Ticket: ${voucherTexts[idx]} is active!`,
+    bg_color: "#1a1a1a",
+    accent_color: "#cfac62",
+    text_color: "#e0e0e0",
+    main_title: "Your Golden Ticket Is Active",
+    intro_message:
+      "Hi Beautiful, your special birthday request has been safely locked in:",
+    card_bg: "linear-gradient(135deg, #8b1e3f 0%, #5c061f 100%)",
+    card_border: "2px solid #cfac62",
+    card_label: "OFFICIAL REDEEMABLE PASS",
+    card_text_color: "#ffffff",
+    voucher_name: voucherTexts[idx],
+    footer_color: "#999999",
+    footer_note:
+      "Valid for presentation to your partner at any moment of your choice. ⏳💝",
+  });
 }
 
 function submitFeedback() {
@@ -755,26 +946,50 @@ function submitFeedback() {
   }
 
   emailjs
-    .send("service_94av9sb", "template_trj4znn", {
-      voucher_name: `Feedback/Thoughts: "${content.length > 100 ? content.slice(0, 100) + "..." : content}"`,
+    .send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATES.BOX_ENGINE, {
+      email_subject: "💌 Thoughts Shared From Your Love!",
+      title_color: "#d94f70",
+      main_title: "💌 Thoughts Shared From Your Love!",
+      intro_message: "She left a brand new message in your heart box:",
+      quiz_score_html: "",
+      border_color: "rgba(212, 85, 110, 0.4)",
+      main_content_payload: `"${content}"`,
+      footer_note:
+        "Sent with endless pure love through your birthday system 💕",
     })
     .then(() => {
       if (textarea) textarea.value = "";
       closeThoughtsModal();
       showSuccessToast("📬 Sent Successfully!");
+
       if (typeof confetti !== "undefined") {
-        confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
+        confetti({
+          particleCount: 140,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
       }
+
+      // Close after 2 seconds
+      setTimeout(() => {
+        window.close();
+      }, 2000);
     })
     .catch((err) => {
-      console.warn("Feedback Email error:", err);
+      console.warn("Feedback failover processing:", err);
       if (textarea) textarea.value = "";
       closeThoughtsModal();
       showSuccessToast("💝 Sent Successfully!");
-      if (typeof confetti !== "undefined") {
-        confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 } });
-      }
     });
+}
+
+function resetBook() {
+  const pages = document.querySelectorAll("#page-10 .book-page");
+  pages.forEach((page, idx) => {
+    page.style.display = "block";
+    page.classList.remove("flipped", "active");
+    if (idx === 0) page.classList.add("active");
+  });
 }
 
 function confettiBurst(mini = false) {
@@ -788,7 +1003,7 @@ function confettiBurst(mini = false) {
     "#a8bfe0",
   ];
   const count = mini ? 40 : 90;
-  for (let i = 0; i < count; i++)
+  for (let i = 0; i < count; i++) {
     setTimeout(() => {
       const c = document.createElement("div");
       c.className = "cf";
@@ -796,13 +1011,12 @@ function confettiBurst(mini = false) {
       document.body.appendChild(c);
       setTimeout(() => c.remove(), 4200);
     }, i * 18);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   initContinuousFloatingImages();
-
   const p0 = document.getElementById("page-0");
   if (p0) setTimeout(() => p0.classList.add("visible"), 50);
-
   updateProg();
 });
