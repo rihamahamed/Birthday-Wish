@@ -591,12 +591,14 @@ body {
 /* ============================================================
    GIFT HUB
    ============================================================ */
+/* --- Header Styles --- */
 .gift-hub-title {
   font-family: "Pinyon Script", cursive;
   font-size: clamp(40px, 11vw, 56px);
   color: var(--rose);
   text-align: center;
 }
+
 .gift-hub-sub {
   text-align: center;
   font-size: var(--fs-s);
@@ -606,49 +608,66 @@ body {
   font-weight: 500;
 }
 
-/* Gift grid: 2 col mobile → 4 col tablet/desktop */
+/* --- Grid Layout (Mobile First: 2 Columns) --- */
 .gift-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--sp-m);
+  gap: var(--sp-m, 16px);
   width: 100%;
-  max-width: 680px;
+  max-width: 340px;
   margin: 0 auto;
+  padding: 0 16px;
+  justify-content: center;
 }
 
+/* --- Base Gift Item --- */
 .gift-item {
   background: linear-gradient(135deg, #fff 0%, rgba(255, 245, 247, 0.65) 100%);
   border: 1px solid rgba(212, 85, 110, 0.15);
   border-radius: 22px;
   padding: 22px 12px;
-  text-align: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 8px 20px rgba(212, 85, 110, 0.07);
   position: relative;
   overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 20px rgba(212, 85, 110, 0.07);
+
+  /* Forces content to center perfectly vertically and horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
-.gift-item:hover,
-.gift-item:active {
-  transform: translateY(-5px) scale(1.03);
-  background: #fff;
-  border-color: var(--rose);
-  box-shadow: 0 14px 28px rgba(212, 85, 110, 0.16);
+
+/* Mobile tap state */
+@media (max-width: 767px) {
+  .gift-item:active {
+    transform: scale(0.97);
+    background: #fff;
+    border-color: var(--rose);
+  }
 }
+
+/* --- Inner Item Elements --- */
 .gift-icon {
   font-size: clamp(28px, 7vw, 38px);
   display: block;
   margin-bottom: 8px;
   filter: drop-shadow(0 2px 4px rgba(212, 85, 110, 0.18));
 }
+
 .gift-lbl {
   font-size: var(--fs-s);
   font-weight: 600;
   letter-spacing: 0.2px;
   color: var(--dark);
+  text-align: center; /* Forces the text characters to center align */
+  width: 100%; /* Ensures full bounds for absolute centering */
+  line-height: 1.2; /* Prevents large gaps if text breaks across lines */
 }
 
-/* Unlocked checkmark */
+/* --- Unlocked Badge --- */
 .gift-item::after {
   content: "✓";
   position: absolute;
@@ -669,12 +688,62 @@ body {
   transition: all 0.3s ease;
   z-index: 5;
 }
+
 .gift-item.unlocked::after {
   opacity: 1;
   top: -16px;
   right: -16px;
 }
 
+/* ============================================================
+   RESPONSIVE TABLET & DESKTOP COMPACT SQUARES (4 PER ROW)
+   ============================================================ */
+@media (min-width: 768px) {
+  .gift-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 680px;
+    gap: 20px;
+  }
+
+  .gift-item {
+    width: 140px;
+    height: 140px;
+    padding: 12px; /* Marginally smaller padding allows more space for text centering */
+    margin: 0 auto;
+  }
+
+  /* Luxury Hover Enhancements */
+  .gift-item:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212, 85, 110, 0.4);
+    box-shadow: 0 15px 30px rgba(212, 85, 110, 0.15);
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 242, 245, 0.9) 100%);
+  }
+
+  /* Premium Shimmer Effect */
+  .gift-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .gift-item:hover::before {
+    left: 150%;
+    transition: all 0.8s ease-in-out;
+  }
+}
 /* ============================================================
    LOVE LETTER
    ============================================================ */
@@ -1046,12 +1115,24 @@ body {
 }
 .pol-photo {
   width: 100%;
-  aspect-ratio: 1;
-  border-radius: 3px;
+  max-width: 350px;
+
+  aspect-ratio: 1 / 1;
+
+  margin: 0 auto;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(28px, 8vw, 42px);
+  font-size: clamp(24px, 5vw, 32px);
+  overflow: hidden;
+}
+
+.pol-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 .pol-label {
   font-family: "Cormorant Garamond", serif;
