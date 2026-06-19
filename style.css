@@ -55,6 +55,7 @@ body {
   background: var(--cream);
   color: var(--dark);
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
 }
 
 .script {
