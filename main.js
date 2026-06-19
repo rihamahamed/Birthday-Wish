@@ -995,19 +995,6 @@ function submitFeedback() {
     });
 }
 
-// Prevent pull-to-refresh by intercepting touch movement at the top of the page
-window.addEventListener(
-  "touchmove",
-  function (e) {
-    // Check if the user is at the very top of the page and pulling down
-    if (window.scrollY === 0 && e.touches[0].clientY > 0) {
-      // Optional: Only prevent if they are pulling down heavily
-      e.preventDefault();
-    }
-  },
-  { passive: false },
-);
-
 function resetBook() {
   const pages = document.querySelectorAll("#page-10 .book-page");
   pages.forEach((page, idx) => {
