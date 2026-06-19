@@ -85,7 +85,7 @@ function mountVideo() {
   const video = document.createElement("video");
   video.src = "mp4/video.mp4";
   video.autoplay = true;
-  video.loop = true;
+  video.loop = false;
   video.playsInline = true;
   video.controls = true;
   video.style.width = "100%";
@@ -548,13 +548,13 @@ function dispatchQuizEmail() {
 
   const scoreHtml = `
     <div style="margin:10px auto 20px auto; padding:12px 25px; background:#ffffff; border:2px solid #6b91c9; display:inline-block; border-radius:30px;">
-      <strong style="font-size:22px; color:#6b91c9;">${quizScore} / ${QUIZ_QUESTIONS.length} (${(quizScore / QUIZ_QUESTIONS.length) * 100}%)</strong>
+      <strong style="font-size:22px; color:#6b91c9;">${quizScore} out of ${QUIZ_QUESTIONS.length} (${(quizScore / QUIZ_QUESTIONS.length) * 100}%)</strong>
     </div>
   `;
 
   emailjs
     .send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATES.BOX_ENGINE, {
-      email_subject: `🏆 Love Quiz Completed! — Score: ${quizScore}/10`,
+      email_subject: `🏆 Love Quiz Completed! — Score: ${quizScore} out of 10`,
       title_color: "#6b91c9",
       main_title: "🏆 Love Quiz Completed!",
       intro_message:
@@ -983,7 +983,6 @@ function submitFeedback() {
         });
       }
 
-      // Close after 2 seconds
       setTimeout(() => {
         window.close();
       }, 2000);
@@ -995,6 +994,19 @@ function submitFeedback() {
       showSuccessToast("💝 Sent Successfully!");
     });
 }
+
+// Prevent pull-to-refresh by intercepting touch movement at the top of the page
+window.addEventListener(
+  "touchmove",
+  function (e) {
+    // Check if the user is at the very top of the page and pulling down
+    if (window.scrollY === 0 && e.touches[0].clientY > 0) {
+      // Optional: Only prevent if they are pulling down heavily
+      e.preventDefault();
+    }
+  },
+  { passive: false },
+);
 
 function resetBook() {
   const pages = document.querySelectorAll("#page-10 .book-page");
