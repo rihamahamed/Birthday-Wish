@@ -995,6 +995,28 @@ function submitFeedback() {
     });
 }
 
+let touchStartPointY = 0;
+
+window.addEventListener(
+  "touchstart",
+  function (e) {
+    touchStartPointY = e.touches[0].clientY;
+  },
+  { passive: true },
+);
+
+window.addEventListener(
+  "touchmove",
+  function (e) {
+    const currentY = e.touches[0].clientY;
+
+    if (window.scrollY === 0 && currentY > touchStartPointY) {
+      e.preventDefault(); 
+    }
+  },
+  { passive: false },
+);
+
 function resetBook() {
   const pages = document.querySelectorAll("#page-10 .book-page");
   pages.forEach((page, idx) => {
