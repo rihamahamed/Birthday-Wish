@@ -144,7 +144,7 @@ function initContinuousFloatingImages() {
   const container = document.getElementById("floating-image-layer");
   if (!container) return;
 
-  const totalFloatingElements = 6;
+  const totalFloatingElements = 10;
   container.innerHTML = "";
 
   for (let i = 0; i < totalFloatingElements; i++) {
@@ -357,6 +357,21 @@ function flipPage(element, nextIndex) {
   }
 }
 
+function zoomImage(event, src) {
+  event.stopPropagation();
+
+  const modal = document.getElementById("imageZoomModal");
+  const zoomedImg = document.getElementById("zoomedImage");
+
+  zoomedImg.src = src;
+  modal.classList.add("show");
+}
+
+function closeZoom() {
+  const modal = document.getElementById("imageZoomModal");
+  modal.classList.remove("show");
+}
+
 const QUIZ_QUESTIONS = [
   {
     q: "Where did we first start talking? 💕",
@@ -430,6 +445,12 @@ function startLoveQuiz() {
   quizScore = 0;
   quizAnswersLog = [];
   optionsClickable = true;
+  switchLeafView("quiz-start-view", "quiz-question-view");
+  renderQuizQuestion();
+
+  const backBtn = document.getElementById("quiz-back-btn");
+  if (backBtn) backBtn.style.display = "none";
+
   switchLeafView("quiz-start-view", "quiz-question-view");
   renderQuizQuestion();
 }
@@ -567,11 +588,16 @@ function dispatchQuizEmail() {
     .then(() => {
       statusEl.textContent =
         "💌 Quiz scores safely arrived in your partner's inbox!";
+      const backBtn = document.getElementById("quiz-back-btn");
+      if (backBtn) backBtn.style.display = "inline-block";
     })
     .catch((err) => {
       console.error("Quiz dispatch error:", err);
       statusEl.textContent =
         "💝 Quiz completed! Layout configuration error occurred.";
+
+      const backBtn = document.getElementById("quiz-back-btn");
+      if (backBtn) backBtn.style.display = "inline-block";
     });
 }
 
@@ -581,6 +607,8 @@ function switchLeafView(hideId, showId) {
 }
 
 function resetLoveQuiz() {
+  const backBtn = document.getElementById("quiz-back-btn");
+  if (backBtn) backBtn.style.display = "inline-block";
   switchLeafView("quiz-result-view", "quiz-start-view");
 }
 

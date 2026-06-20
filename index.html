@@ -716,11 +716,15 @@
       </div>
     </div>
 
-    <!-- <div class="page page-scroll" id="page-10">
+    <div class="page page-scroll" id="page-10">
       <div class="flipbook-wrapper">
         <div class="timeline-header" style="margin-bottom: 25px">
           <h2 class="serif timeline-main-title">Our Story Book</h2>
           <p class="timeline-subtitle">Tap the edge or corners to flip pages</p>
+        </div>
+
+        <div id="imageZoomModal" class="zoom-modal" onclick="closeZoom()">
+          <img id="zoomedImage" src="" alt="Zoomed view" />
         </div>
 
         <div class="book-container">
@@ -741,7 +745,8 @@
                     color: var(--mauve);
                   "
                 >
-                  Our Lifetime Memories
+                  From a shared photo to a beautiful love story...<br />
+                  Every page holds a memory, every memory holds you.
                 </p>
                 <span class="tap-hint">Tap to open ➔</span>
               </div>
@@ -753,19 +758,27 @@
             <div class="page-front glass">
               <div class="page-num">1</div>
               <span class="story-emoji">🌱</span>
-              <span class="timeline-date">August 14, 2024</span>
-              <div class="story-img-wrapper">
+              <span class="timeline-date">24 January 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img1.jpeg')"
+              >
                 <img
-                  src="https://via.placeholder.com/150"
+                  src="./img/book/img1.jpeg"
                   alt="Our First Hello"
                   class="story-thumbnail"
                 />
               </div>
-              <h4 class="serif story-title">The First Hello</h4>
+              <h4 class="serif story-title">The Unexpected Beginning</h4>
               <p class="story-text">
-                The magical day our paths crossed and a beautiful conversation
-                started that changed my life forever.
+                One simple photo changed everything. My aunt shared your
+                picture, and without knowing it, that moment became the first
+                page of our story.
               </p>
+              <div class="joke-box">
+                💭 Who knew a single photo could cause a lifetime subscription
+                to missing someone?
+              </div>
               <span class="tap-hint">Next ➔</span>
             </div>
             <div class="page-back glass"></div>
@@ -774,20 +787,28 @@
           <div class="book-page" onclick="flipPage(this, 3)">
             <div class="page-front glass">
               <div class="page-num">2</div>
-              <span class="story-emoji">💘</span>
-              <span class="timeline-date">October 02, 2024</span>
-              <div class="story-img-wrapper">
+              <span class="story-emoji">🍫</span>
+              <span class="timeline-date">11 February 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img2.jpeg')"
+              >
                 <img
-                  src="https://via.placeholder.com/150"
-                  alt="When We Realized"
+                  src="./img/book/img2.jpeg"
+                  alt="Chocolate & First Meeting"
                   class="story-thumbnail"
                 />
               </div>
-              <h4 class="serif story-title">When We Realized</h4>
+              <h4 class="serif story-title">Chocolate & First Meeting</h4>
               <p class="story-text">
-                Late-night calls turned into shared dreams, and we both silently
-                knew this bond was something truly rare.
+                For the very first time, we met at Food City. A chocolate was
+                exchanged, but little did I know that day I'd receive something
+                sweeter than chocolate — your presence.
               </p>
+              <div class="joke-box">
+                💭 The chocolate had an expiry date, but my feelings for you
+                didn't.
+              </div>
               <span class="tap-hint">Next ➔</span>
             </div>
             <div class="page-back glass"></div>
@@ -796,20 +817,176 @@
           <div class="book-page" onclick="flipPage(this, 4)">
             <div class="page-front glass">
               <div class="page-num">3</div>
-              <span class="story-emoji">🧸</span>
-              <span class="timeline-date">January 01, 2025</span>
-              <div class="story-img-wrapper">
+              <span class="story-emoji">💌</span>
+              <span class="timeline-date">13 February 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img3.jpeg')"
+              >
                 <img
-                  src="https://via.placeholder.com/150"
-                  alt="New Year Chapter"
+                  src="./img/book/img3.jpeg"
+                  alt="The Message That Stole My Heart"
                   class="story-thumbnail"
                 />
               </div>
-              <h4 class="serif story-title">New Year Chapter</h4>
-              <p class="story-text">
-                Stepping into a completely new year holding your hand close to
-                my heart, full of hope and pure love.
+              <h4 class="serif story-title">The Message That Stole My Heart</h4>
+              <p class="story-text" style="font-size: 12px">
+                "Looks like I didn't get a response yet 😁 The chocolate you
+                gave me is still confused whether it should go to my belly or
+                come back to you 😂" That cute message instantly made my heart
+                pay attention.
               </p>
+              <div class="joke-box">
+                💭 I replied to the message... but my heart replied first.
+              </div>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 5)">
+            <div class="page-front glass">
+              <div class="page-num">4</div>
+              <span class="story-emoji">❤️</span>
+              <span class="timeline-date">14 February 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img4.jpeg')"
+              >
+                <img
+                  src="./img/book/img4.jpeg"
+                  alt="From Strangers to Us"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">From Strangers to Us</h4>
+              <p class="story-text">
+                Valentine's Day became our beginning. We started talking on
+                Instagram and exchanged numbers. A small step for our phones...
+                a giant leap for our hearts.
+              </p>
+              <div class="joke-box">
+                💭 My contact list gained one number and lost all its peace.
+              </div>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 6)">
+            <div class="page-front glass">
+              <div class="page-num">5</div>
+              <span class="story-emoji">📹</span>
+              <span class="timeline-date">20 February 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img5.jpeg')"
+              >
+                <img
+                  src="./img/book/img5.jpeg"
+                  alt="Our First Video Call"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">Our First Video Call</h4>
+              <p class="story-text">
+                Our first WhatsApp video call finally happened. We talked,
+                laughed, and captured a small screenshot that became a precious
+                memory.
+              </p>
+              <div class="joke-box">
+                💭 The screenshot was taken to save the moment... but you were
+                already saved in my heart.
+              </div>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 7)">
+            <div class="page-front glass">
+              <div class="page-num">6</div>
+              <span class="story-emoji">🏡</span>
+              <span class="timeline-date">26 March 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img6.jpeg')"
+              >
+                <img
+                  src="./img/book/img6.jpeg"
+                  alt="Visiting Your Home"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">Visiting Your Home</h4>
+              <p class="story-text">
+                For the first time, I visited your home. Every conversation felt
+                deeply special because it naturally brought us closer together.
+              </p>
+              <div class="joke-box">
+                💭 I came as a guest, but my heart applied for permanent
+                residence.
+              </div>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 8)">
+            <div class="page-front glass">
+              <div class="page-num">7</div>
+              <span class="story-emoji">🎓</span>
+              <span class="timeline-date">30 April 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img7.jpeg')"
+              >
+                <img
+                  src="./img/book/img7.jpeg"
+                  alt="Our Private Meeting"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">Our Private Meeting</h4>
+              <p class="story-text">
+                We met privately at your university. Just us, our quiet
+                conversations, and beautiful memories that made time pass much
+                too quickly.
+              </p>
+              <div class="joke-box">
+                💭 The university taught many subjects, but you were the only
+                lesson I paid attention to.
+              </div>
+              <span class="tap-hint">Next ➔</span>
+            </div>
+            <div class="page-back glass"></div>
+          </div>
+
+          <div class="book-page" onclick="flipPage(this, 9)">
+            <div class="page-front glass">
+              <div class="page-num">8</div>
+              <span class="story-emoji">👗</span>
+              <span class="timeline-date">26 May 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img8.jpeg')"
+              >
+                <img
+                  src="./img/book/img8.jpeg"
+                  alt="Eid Gift For You"
+                  class="story-thumbnail"
+                />
+              </div>
+              <h4 class="serif story-title">Eid Gift For You</h4>
+              <p class="story-text">
+                I gifted you a dress for Eid al-Adha. Seeing your genuine
+                happiness made the gift feel more valuable than anything else I
+                could ever buy.
+              </p>
+              <div class="joke-box">
+                💭 I bought the dress for you... but somehow you became the gift
+                in my life.
+              </div>
               <span class="tap-hint">Next ➔</span>
             </div>
             <div class="page-back glass"></div>
@@ -817,23 +994,34 @@
 
           <div class="book-page final-page">
             <div class="page-front glass">
-              <div class="page-num">4</div>
+              <div class="page-num">9</div>
               <span class="story-emoji">🎂</span>
-              <span class="timeline-date">Today</span>
-              <div class="story-img-wrapper">
+              <span class="timeline-date">07 July 2026</span>
+              <div
+                class="story-img-wrapper"
+                onclick="zoomImage(event, './img/book/img9.jpeg')"
+              >
                 <img
-                  src="https://via.placeholder.com/150"
+                  src="./img/book/img9.jpeg"
                   alt="Happy Birthday"
                   class="story-thumbnail"
                 />
               </div>
-              <h4 class="serif story-title">Happy Birthday!</h4>
-              <p class="story-text">
-                Celebrating the most spectacular person in my world. Looking
-                forward to filling endless more pages together.
+              <h4 class="serif story-title">Happy Birthday, My Love!</h4>
+              <p class="story-text" style="font-size: 12px">
+                Thank you for every smile, every call, and every single memory.
+                May this be only the beginning of countless chapters yet to
+                come. ❤️
               </p>
-              <div class="lyrics-decoration" style="margin: 10px 0">
-                ✨ ─── 🧸 ─── ✨
+              <div
+                class="joke-box"
+                style="color: var(--rose); font-weight: bold; margin-top: 5px"
+              >
+                💭 I was planning to gift you the moon, but then I remembered
+                you're already the brightest thing in my sky.
+              </div>
+              <div class="lyrics-decoration" style="margin: 5px 0">
+                ✨ ─── 💖 ─── ✨
               </div>
               <button class="btn btn-reset-book" onclick="resetBook()">
                 🔄 Reopen Book
@@ -849,9 +1037,9 @@
           </button>
         </div>
       </div>
-    </div> -->
+    </div>
 
-    <div class="page page-scroll" id="page-10">
+    <!-- <div class="page page-scroll" id="page-10">
       <div class="flipbook-wrapper">
         <div class="timeline-header" style="margin-bottom: 25px">
           <h2 class="serif timeline-main-title">Our Story Book</h2>
@@ -1230,7 +1418,8 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
+
     <div class="page page-scroll" id="page-11">
       <div class="page-content quiz-page-wrapper">
         <div class="quiz-header">
@@ -1302,7 +1491,12 @@
           </div>
         </div>
 
-        <button class="btn btn-back" style="margin-top: 35px" onclick="goTo(3)">
+        <button
+          id="quiz-back-btn"
+          class="btn btn-back"
+          style="margin-top: 35px"
+          onclick="goTo(3)"
+        >
           ← Back to Gifts
         </button>
       </div>
