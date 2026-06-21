@@ -200,7 +200,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Center-content pages (landing, game, jar, etc.) */
 .page:not(.page-scroll) {
   justify-content: center;
 }
@@ -215,13 +214,11 @@ body {
   pointer-events: auto;
 }
 
-/* page-scroll keeps top padding for fixed chrome */
 .page-scroll {
   padding-top: 56px;
   justify-content: flex-start;
 }
 
-/* Inner content wrapper used on several pages */
 .page-content {
   width: 100%;
   max-width: 860px;
@@ -591,7 +588,6 @@ body {
 /* ============================================================
    GIFT HUB
    ============================================================ */
-/* --- Header Styles --- */
 .gift-hub-title {
   font-family: "Pinyon Script", cursive;
   font-size: clamp(40px, 11vw, 56px);
@@ -608,7 +604,6 @@ body {
   font-weight: 500;
 }
 
-/* --- Grid Layout (Mobile First: 2 Columns) --- */
 .gift-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -620,7 +615,6 @@ body {
   justify-content: center;
 }
 
-/* --- Base Gift Item --- */
 .gift-item {
   background: linear-gradient(135deg, #fff 0%, rgba(255, 245, 247, 0.65) 100%);
   border: 1px solid rgba(212, 85, 110, 0.15);
@@ -632,7 +626,6 @@ body {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 8px 20px rgba(212, 85, 110, 0.07);
 
-  /* Forces content to center perfectly vertically and horizontally */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -640,7 +633,6 @@ body {
   text-align: center;
 }
 
-/* Mobile tap state */
 @media (max-width: 767px) {
   .gift-item:active {
     transform: scale(0.97);
@@ -649,7 +641,6 @@ body {
   }
 }
 
-/* --- Inner Item Elements --- */
 .gift-icon {
   font-size: clamp(28px, 7vw, 38px);
   display: block;
@@ -662,12 +653,11 @@ body {
   font-weight: 600;
   letter-spacing: 0.2px;
   color: var(--dark);
-  text-align: center; /* Forces the text characters to center align */
-  width: 100%; /* Ensures full bounds for absolute centering */
-  line-height: 1.2; /* Prevents large gaps if text breaks across lines */
+  text-align: center;
+  width: 100%;
+  line-height: 1.2;
 }
 
-/* --- Unlocked Badge --- */
 .gift-item::after {
   content: "✓";
   position: absolute;
@@ -708,11 +698,10 @@ body {
   .gift-item {
     width: 140px;
     height: 140px;
-    padding: 12px; /* Marginally smaller padding allows more space for text centering */
+    padding: 12px;
     margin: 0 auto;
   }
 
-  /* Luxury Hover Enhancements */
   .gift-item:hover {
     transform: translateY(-6px);
     border-color: rgba(212, 85, 110, 0.4);
@@ -720,7 +709,6 @@ body {
     background: linear-gradient(135deg, #fff 0%, rgba(255, 242, 245, 0.9) 100%);
   }
 
-  /* Premium Shimmer Effect */
   .gift-item::before {
     content: "";
     position: absolute;
@@ -774,7 +762,6 @@ body {
   letter-spacing: 5px;
 }
 
-/* Shared thin scrollbar */
 .letter-scroll {
   max-height: clamp(220px, 45vh, 340px);
   overflow-y: auto;
@@ -1543,7 +1530,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  perspective: 2000px; /* Enhanced perspective for deep 3D view */
+  perspective: 2500px; 
 }
 
 .timeline-main-title {
@@ -1568,7 +1555,7 @@ body {
   max-width: 340px;
   height: 500px;
   margin: 30px auto;
-  perspective: 2000px;
+  perspective: 2500px;
 }
 
 .book-spine {
@@ -1598,26 +1585,19 @@ body {
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
   transition:
-    transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1),
-    z-index 0.8s;
+    transform 0.85s cubic-bezier(0.4, 0, 0.2, 1),
+    z-index 0.85s ease;
   z-index: 1;
-  cursor: pointer;
   transform-origin: left center;
-  pointer-events: none;
-}
-
-.book-page.active,
-.book-page.flipped {
-  pointer-events: auto;
 }
 
 .book-page.active {
-  z-index: 5;
+  z-index: 10 !important;
 }
 
 .book-page.flipped {
-  transform: rotateY(-180deg); /* Real life rotation */
-  z-index: 2;
+  transform: rotateY(-180deg);
+  z-index: 5;
 }
 
 .page-front,
@@ -1627,30 +1607,55 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 0 var(--r-m) var(--r-m) 0;
   padding: 26px 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  box-shadow:
-    inset -5px 0 30px rgba(0, 0, 0, 0.03),
-    0 12px 35px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: var(--cream);
+  background: var(--cream) !important;
   overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-/* Back page faces opposite direction organically */
+.page-front {
+  z-index: 2;
+  transform: rotateY(0deg);
+  border-radius: 0 var(--r-m) var(--r-m) 0;
+  box-shadow:
+    inset 15px 0 30px rgba(0, 0, 0, 0.04),
+    inset -5px 0 15px rgba(0, 0, 0, 0.02),
+    0 8px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
 .page-back {
+  z-index: 1;
   transform: rotateY(180deg);
   border-radius: var(--r-m) 0 0 var(--r-m);
-  background: linear-gradient(to right, #f6f0ea, var(--cream));
+  box-shadow:
+    inset -15px 0 30px rgba(0, 0, 0, 0.04),
+    inset 5px 0 15px rgba(0, 0, 0, 0.02),
+    -8px 8px 25px rgba(0, 0, 0, 0.08) !important;
 }
 
+.blank-page-content {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: var(--fs-s);
+  color: var(--rose);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
 .cover-content {
   margin: auto 0;
 }
@@ -1730,6 +1735,13 @@ body {
   line-height: 1.5;
 }
 
+.nav-controls {
+  display: flex;
+  justify-content: center;
+  gap: 25px; 
+  margin-top: 8px;
+}
+
 .tap-hint {
   font-size: 10px;
   color: var(--rose);
@@ -1737,6 +1749,17 @@ body {
   letter-spacing: 1.2px;
   margin-top: 8px;
   font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.tap-hint:hover {
+  transform: translateX(4px);
+  color: var(--rose-d);
 }
 
 .btn-reset-book {
@@ -1749,9 +1772,16 @@ body {
   border-radius: var(--r-pill);
   cursor: pointer;
   margin-top: 10px;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Zoom Lightbox Modal */
+.btn-reset-book:hover {
+  background: var(--rose);
+  color: white;
+}
+
 .zoom-modal {
   display: none;
   position: fixed;
@@ -2018,7 +2048,6 @@ body {
     padding-top: 70px;
   }
 
-  /* Gift grid: 4 columns on tablet+ */
   .gift-grid {
     grid-template-columns: repeat(4, 1fr);
     max-width: 720px;
@@ -2103,7 +2132,7 @@ body {
   }
   .page-front,
   .page-back {
-    padding: 30px 24px;
+    padding: 15px 24px;
   }
 }
 
@@ -2124,7 +2153,6 @@ body {
     margin-top: 0;
   }
 
-  /* Gift grid: 4 columns, larger */
   .gift-grid {
     grid-template-columns: repeat(4, 1fr);
     max-width: 800px;

@@ -332,37 +332,45 @@ function startDirectLifeCounter() {
   lifeInterval = setInterval(updateLife, 1000);
 }
 
-function flipPage(element, nextIndex) {
-  element.classList.remove("active");
-  element.classList.add("flipped");
+function flipPage(elementId, nextIndex) {
+  const currentPage = document.getElementById(elementId);
+  currentPage.classList.remove("active");
+  currentPage.classList.add("flipped");
 
   if (window.innerWidth < 768) {
     setTimeout(() => {
-      if (element.classList.contains("flipped")) {
-        element.style.display = "none";
+      if (currentPage.classList.contains("flipped")) {
+        currentPage.style.style.display = "none";
       }
-    }, 600);
+    }, 750);
   }
 
   const pages = document.querySelectorAll("#page-10 .book-page");
   if (pages[nextIndex]) {
     pages[nextIndex].style.display = "block";
     pages[nextIndex].classList.add("active");
-  } else {
-    const finalPage = document.querySelector("#page-10 .final-page");
-    if (finalPage) {
-      finalPage.style.display = "block";
-      finalPage.classList.add("active");
-    }
+  }
+}
+
+function prevPage(elementId, prevIndex) {
+  const currentPage = document.getElementById(elementId);
+  const pages = document.querySelectorAll("#page-10 .book-page");
+
+  if (pages[prevIndex]) {
+    pages[prevIndex].style.display = "block";
+    pages[prevIndex].classList.remove("flipped");
+    pages[prevIndex].classList.add("active");
+  }
+
+  if (currentPage) {
+    currentPage.classList.remove("active");
   }
 }
 
 function zoomImage(event, src) {
   event.stopPropagation();
-
   const modal = document.getElementById("imageZoomModal");
   const zoomedImg = document.getElementById("zoomedImage");
-
   zoomedImg.src = src;
   modal.classList.add("show");
 }
@@ -370,6 +378,15 @@ function zoomImage(event, src) {
 function closeZoom() {
   const modal = document.getElementById("imageZoomModal");
   modal.classList.remove("show");
+}
+
+function resetBook() {
+  const pages = document.querySelectorAll("#page-10 .book-page");
+  pages.forEach((page, idx) => {
+    page.style.display = "block";
+    page.classList.remove("flipped", "active");
+    if (idx === 0) page.classList.add("active");
+  });
 }
 
 const QUIZ_QUESTIONS = [
@@ -737,7 +754,7 @@ let gFlipped = [],
   gMoves = 0;
 let gLive = false,
   gTid,
-  gLeft = 30;
+  gLeft = 15;
 let gLocked = false;
 
 function initGame() {
@@ -750,7 +767,7 @@ function initGame() {
   g.innerHTML = "";
   document.getElementById("sbtn").style.display = "";
   document.getElementById("skbtn").style.display = "";
-  document.getElementById("timer").textContent = "30";
+  document.getElementById("timer").textContent = "15";
   document.getElementById("moves").textContent = "0";
   document.getElementById("pf").textContent = "0";
   document.getElementById("pt").textContent = EMOJIS.length;
@@ -760,7 +777,7 @@ function initGame() {
   gMoves = 0;
   gMatched = 0;
   gFlipped = [];
-  gLeft = 30;
+  gLeft = 15;
   gLive = false;
   gLocked = false;
   clearInterval(gTid);
@@ -789,7 +806,7 @@ function startGame() {
   gTid = setInterval(() => {
     gLeft--;
     document.getElementById("timer").textContent = gLeft;
-    if (gLeft <= 8) document.getElementById("tstat").classList.add("low");
+    if (gLeft <= 5) document.getElementById("tstat").classList.add("low");
     if (gLeft <= 0) {
       clearInterval(gTid);
       gLive = false;
@@ -821,11 +838,34 @@ function showErrorToast(message) {
 
 function verifyPasscode() {
   const codeInput = document.getElementById("game-passcode").value;
+
   if (codeInput === "14022026") {
     clearInterval(gTid);
     gLive = false;
-    showSuccessToast("✨ Code Accepted! Unlocking gifts...");
-    setTimeout(() => goTo(3), 1000);
+
+    const prankModal = document.getElementById("prank-modal");
+    prankModal.classList.add("modal-open");
+
+    setTimeout(() => {
+      document.getElementById("prank-title").innerText = "⚠️ SYSTEM FAILURE";
+      document.getElementById("prank-text").innerText =
+        "Deleting all gifts and blocking user... 📉";
+    }, 2500);
+
+    setTimeout(() => {
+      document.getElementById("prank-title").innerText = " Just Kidding! 😂";
+      document.getElementById("prank-text").innerText =
+        "You really thought I'd lock you out? I love you too much! ❤️";
+      document.getElementById("prank-status").innerHTML =
+        "🔓 ACCESS GRANTED COMPLETELY!";
+      document.getElementById("prank-status").style.color = "var(--teal)";
+    }, 6000);
+
+    setTimeout(() => {
+      prankModal.classList.remove("modal-open");
+      showSuccessToast("✨ Code Accepted! Unlocking gifts...");
+      setTimeout(() => goTo(3), 1000);
+    }, 11000);
   } else {
     const teasingMessages = [
       "Hmm... are you sure you love me? 😂 Try again! 💕",
@@ -1021,15 +1061,6 @@ function submitFeedback() {
       closeThoughtsModal();
       showSuccessToast("💝 Sent Successfully!");
     });
-}
-
-function resetBook() {
-  const pages = document.querySelectorAll("#page-10 .book-page");
-  pages.forEach((page, idx) => {
-    page.style.display = "block";
-    page.classList.remove("flipped", "active");
-    if (idx === 0) page.classList.add("active");
-  });
 }
 
 function confettiBurst(mini = false) {
