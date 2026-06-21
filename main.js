@@ -128,16 +128,16 @@ function mountVideo() {
 }
 
 const floatingImagesList = [
-  "img/floting/img1.jpeg",
-  "img/floting/img2.jpeg",
-  "img/floting/img3.jpeg",
-  "img/floting/img4.jpeg",
-  "img/floting/img5.jpeg",
-  "img/floting/img6.jpeg",
-  "img/floting/img7.jpeg",
-  "img/floting/img8.jpeg",
-  "img/floting/img9.jpeg",
-  "img/floting/img10.jpeg",
+  "img/floting/img1.webp",
+  "img/floting/img2.webp",
+  "img/floting/img3.webp",
+  "img/floting/img4.webp",
+  "img/floting/img5.webp",
+  "img/floting/img6.webp",
+  "img/floting/img7.webp",
+  "img/floting/img8.webp",
+  "img/floting/img9.webp",
+  "img/floting/img10.webp",
 ];
 
 function initContinuousFloatingImages() {
@@ -850,7 +850,7 @@ function verifyPasscode() {
       document.getElementById("prank-title").innerText = "⚠️ SYSTEM FAILURE";
       document.getElementById("prank-text").innerText =
         "Deleting all gifts and blocking user... 📉";
-    }, 2500);
+    }, 2000);
 
     setTimeout(() => {
       document.getElementById("prank-title").innerText = " Just Kidding! 😂";
@@ -859,13 +859,13 @@ function verifyPasscode() {
       document.getElementById("prank-status").innerHTML =
         "🔓 ACCESS GRANTED COMPLETELY!";
       document.getElementById("prank-status").style.color = "var(--teal)";
-    }, 6000);
+    }, 2000);
 
     setTimeout(() => {
       prankModal.classList.remove("modal-open");
       showSuccessToast("✨ Code Accepted! Unlocking gifts...");
       setTimeout(() => goTo(3), 1000);
-    }, 11000);
+    }, 3000);
   } else {
     const teasingMessages = [
       "Hmm... are you sure you love me? 😂 Try again! 💕",
