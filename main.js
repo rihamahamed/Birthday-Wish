@@ -12,7 +12,7 @@ emailjs.init("fOKIPhBJveSbfrzCZ");
 const EMAIL_CONFIG = {
   SERVICE_ID: "service_94av9sb",
   TEMPLATES: {
-    //VOUCHER_ENGINE: "template_trj4znn",
+    VOUCHER_ENGINE: "template_trj4znn",
     BOX_ENGINE: "template_6onz6ji",
   },
 };
