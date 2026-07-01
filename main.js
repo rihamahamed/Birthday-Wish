@@ -68,6 +68,17 @@ function resumeBGMAfterSong() {
     startBGM();
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const words = document.querySelectorAll("#love-forever span");
+
+  words.forEach((word, index) => {
+    word.style.transitionDelay = `${index * 0.15}s`;
+  });
+
+  setTimeout(() => {
+    words.forEach((word) => word.classList.add("active-glow"));
+  }, 100);
+});
 
 function autoStartBGM() {
   if (bgmAutoStarted) return;
@@ -138,13 +149,16 @@ const floatingImagesList = [
   "img/floting/img8.webp",
   "img/floting/img9.webp",
   "img/floting/img10.webp",
+  "img/floting/img11.webp",
+  "img/floting/img12.webp",
+
 ];
 
 function initContinuousFloatingImages() {
   const container = document.getElementById("floating-image-layer");
   if (!container) return;
 
-  const totalFloatingElements = 10;
+  const totalFloatingElements = 12;
   container.innerHTML = "";
 
   for (let i = 0; i < totalFloatingElements; i++) {
