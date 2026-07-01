@@ -876,13 +876,13 @@ function verifyPasscode() {
       document.getElementById("prank-status").innerHTML =
         "🔓 ACCESS GRANTED COMPLETELY!";
       document.getElementById("prank-status").style.color = "var(--teal)";
-    }, 2000);
+    }, 4000);
 
     setTimeout(() => {
       prankModal.classList.remove("modal-open");
       showSuccessToast("✨ Code Accepted! Unlocking gifts...");
       setTimeout(() => goTo(3), 1000);
-    }, 3000);
+    }, 6000);
   } else {
     const teasingMessages = [
       "Hmm... are you sure you love me? 😂 Try again! 💕",
