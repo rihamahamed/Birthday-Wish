@@ -151,45 +151,48 @@ const floatingImagesList = [
   "img/floting/img10.webp",
   "img/floting/img11.webp",
   "img/floting/img12.webp",
-
 ];
 
 function initContinuousFloatingImages() {
   const container = document.getElementById("floating-image-layer");
   if (!container) return;
 
-  const totalFloatingElements = 12;
+  const maxElementsOnScreen = 6;
   container.innerHTML = "";
+  let nextImageIndex = maxElementsOnScreen;
+  function setImageSource(node, imageSrc) {
+    if (imageSrc.includes(".") || imageSrc.startsWith("data:")) {
+      node.style.backgroundImage = `url('${imageSrc}')`;
+      node.style.backgroundSize = "cover";
+      node.style.backgroundPosition = "center 20%";
+      node.textContent = "";
+    } else {
+      node.style.backgroundImage = "none";
+      node.style.display = "flex";
+      node.style.justifyContent = "center";
+      node.style.alignItems = "center";
+      node.style.fontSize = "2rem";
+      node.textContent = imageSrc;
+    }
+  }
 
-  for (let i = 0; i < totalFloatingElements; i++) {
+  for (let i = 0; i < maxElementsOnScreen; i++) {
     const imgNode = document.createElement("div");
     imgNode.className = "floating-circle-img";
-    const currentItem = floatingImagesList[i % floatingImagesList.length];
-
-    if (currentItem.includes(".") || currentItem.startsWith("data:")) {
-      imgNode.style.backgroundImage = `url('${currentItem}')`;
-      imgNode.style.backgroundSize = "cover";
-
-      imgNode.style.backgroundPosition = "center 20%";
-    } else {
-      imgNode.style.display = "flex";
-      imgNode.style.justifyContent = "center";
-      imgNode.style.alignItems = "center";
-      imgNode.style.fontSize = "2rem";
-      imgNode.textContent = currentItem;
-    }
-
+    setImageSource(imgNode, floatingImagesList[i]);
     const randomTop = Math.floor(Math.random() * 50) + 20;
     imgNode.style.top = `${randomTop}%`;
 
-    const leftPosition = i * (100 / totalFloatingElements) + Math.random() * 8;
-
+    const leftPosition = i * (100 / maxElementsOnScreen) + Math.random() * 8;
     imgNode.style.left = `${Math.min(leftPosition, 90)}%`;
-
     imgNode.style.animationDelay = `${Math.random() * -20}s`;
     imgNode.style.animationDuration = `${16 + Math.random() * 8}s`;
-
     imgNode.style.setProperty("--sway-x", `${Math.random() * 60 - 30}px`);
+    imgNode.addEventListener("animationiteration", () => {
+      const nextImg = floatingImagesList[nextImageIndex];
+      setImageSource(imgNode, nextImg);
+      nextImageIndex = (nextImageIndex + 1) % floatingImagesList.length;
+    });
 
     container.appendChild(imgNode);
   }
