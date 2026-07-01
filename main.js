@@ -938,11 +938,13 @@ function gFlip(c) {
 }
 
 const voucherTexts = [
-  "Free Birthday Shopping — redeem anytime! 🛍️",
-  "Movie Night With You — your pick, my treat! 🎬",
-  "Your Most Loved Dessert — I'll take you there! 🍰",
+  "Movie Date With You — Your favorite movie, popcorn, snacks, and my company. A perfect date, all on me! ❤️🍿",
+
+  "Meet You at University — One special day where I'll come and spend time with you at your university, creating another beautiful memory together. 💕",
+
+  "Ice Cream Treat — Your favorite ice cream is on me! Let's enjoy a sweet treat and make more happy memories together. 🍨❤️",
 ];
-const voucherIcons = ["🛍️", "🎬", "🍰"];
+const voucherIcons = ["🎬", "🎓", "🍦"];
 let selectedVoucherIndex = null;
 let redeemedVoucher = null;
 
